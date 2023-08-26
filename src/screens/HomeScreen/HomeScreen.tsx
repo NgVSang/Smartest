@@ -31,7 +31,9 @@ const HomeScreen: FC<HomeScreenProps> = ({navigation}) => {
       {
         name: 'Xem lịch sử đăng kiểm',
         icon: require('../../assets/icons/registry_history_icon.png'),
-        onPress: () => {},
+        onPress: () => {
+          navigation.push('HistoryRegistry');
+        },
       },
       {
         name: 'Thông tin tích điểm',

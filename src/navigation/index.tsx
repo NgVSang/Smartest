@@ -5,7 +5,13 @@ import {
 } from '@react-navigation/native';
 import {RootStackParamList} from './types';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
-import {AuthScreen, CarListScreen, RegistrationListScreen} from '../screens';
+import {
+  AuthScreen,
+  CarListScreen,
+  HistoryRegistryDetailScreen,
+  HistoryRegistryScreen,
+  RegistrationListScreen,
+} from '../screens';
 import BottomNavigattion from './BottomNavigattion';
 import {useSelector} from 'react-redux';
 import {authSelector} from '../redux';
@@ -51,6 +57,14 @@ const RootNavigator: FC = () => {
           component={RegistrationListScreen}
         />
         <Stack.Screen name="CarList" component={CarListScreen} />
+        <Stack.Screen
+          name="HistoryRegistry"
+          component={HistoryRegistryScreen}
+        />
+        <Stack.Screen
+          name="HistoryRegistryDetail"
+          component={HistoryRegistryDetailScreen}
+        />
       </Stack.Navigator>
     </NavigationContainer>
   );
