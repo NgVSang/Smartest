@@ -1,0 +1,33 @@
+{
+  "migIndex": 1,
+  "data": [
+    {
+      "path": "src/assets/fonts/BeVietnamPro-Bold.ttf",
+      "sha1": "0bd7e256f73efd0a8135c5090d62f150107ff37a"
+    },
+    {
+      "path": "src/assets/fonts/BeVietnamPro-Light.ttf",
+      "sha1": "4c7d4497bc6b506d9fefdc8227418bbb637bc524"
+    },
+    {
+      "path": "src/assets/fonts/BeVietnamPro-Medium.ttf",
+      "sha1": "7525dd63d853386f3c192fa78502e547ea620e96"
+    },
+    {
+      "path": "src/assets/fonts/BeVietnamPro-Regular.ttf",
+      "sha1": "03d9e7cd56b446b0585b36a46c3f4b140c6e0026"
+    },
+    {
+      "path": "src/assets/fonts/BeVietnamPro-SemiBold.ttf",
+      "sha1": "1b8668d1e0f6949d9a702c2a590971ab7946a79f"
+    },
+    {
+      "path": "src/assets/fonts/Roboto-Bold.ttf",
+      "sha1": "62442a18a9fe9457c1afeabf683d263a691b7798"
+    },
+    {
+      "path": "src/assets/fonts/iCiel-SamsungSharpSans-Bold_SMCPS.ttf",
+      "sha1": "068a36c3b8e7d5dd25130d60e0c7217cf8f550a2"
+    }
+  ]
+}

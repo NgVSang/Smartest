@@ -1,0 +1,86 @@
+import {StyleSheet} from 'react-native';
+import {colors, fonts} from '../../constants';
+
+export const styles = StyleSheet.create({
+  img_back: {
+    resizeMode: 'cover',
+    zIndex: -1,
+    width: '100%',
+  },
+  container: {
+    width: '100%',
+    height: '100%',
+    position: 'absolute',
+  },
+  group: {
+    position: 'absolute',
+    width: '100%',
+    bottom: 70,
+    zIndex: 0,
+  },
+  title: {
+    paddingHorizontal: 61,
+    marginBottom: 55,
+  },
+  title_top: {
+    fontFamily: fonts.ICIEL_SAMSUNG_BOLD,
+    fontSize: 36,
+    fontWeight: '700',
+    lineHeight: 54,
+    letterSpacing: 0.2,
+    color: colors.WHITE,
+    textAlign: 'center',
+  },
+  title_bot: {
+    fontFamily: fonts.BE_VIETNAM_PRO_REGULAR,
+    fontSize: 12,
+    fontWeight: '400',
+    lineHeight: 20,
+    color: colors.WHITE,
+    textAlign: 'center',
+  },
+  btn_group: {
+    paddingHorizontal: 90,
+  },
+  btn_login: {
+    width: '100%',
+    height: 40,
+    borderRadius: 24,
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginBottom: 20,
+    backgroundColor: colors.ROYAL_BLUE,
+    shadowColor: '#0000001F',
+    shadowOffset: {width: -2, height: 4},
+    shadowOpacity: 0.2,
+    shadowRadius: 3,
+    elevation: 3,
+  },
+  btn_register: {
+    width: '100%',
+    height: 40,
+    borderRadius: 24,
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: colors.WHITE,
+    shadowColor: '#0000001F',
+    shadowOffset: {width: -2, height: 4},
+    shadowOpacity: 0.2,
+    shadowRadius: 3,
+    elevation: 3,
+  },
+  btn_style: {
+    fontFamily: fonts.BE_VIETNAM_PRO_BOLD,
+    fontWeight: '700',
+    fontSize: 13,
+    lineHeight: 22,
+  },
+  slidingPanelLayoutStyle: {
+    backgroundColor: colors.WHITE,
+    justifyContent: 'center',
+    alignItems: 'center',
+    width: 360,
+    height: 300,
+    zIndex: 10,
+  },
+});
