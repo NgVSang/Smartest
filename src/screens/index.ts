@@ -6,3 +6,5 @@ export * from './Registration';
 export * from './Car';
 export * from './HistoryRegistryScreen';
 export * from './HistoryRegistryDetailScreen';
+export * from './InfringeScreen';
+export * from './InfringeDetailScreen';

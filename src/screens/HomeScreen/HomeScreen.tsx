@@ -43,7 +43,9 @@ const HomeScreen: FC<HomeScreenProps> = ({navigation}) => {
       {
         name: 'Tra cứu lỗi vi phạm',
         icon: require('../../assets/icons/search_violate_icon.png'),
-        onPress: () => {},
+        onPress: () => {
+          navigation.push('Infringe');
+        },
       },
       {
         name: 'Thông tin tài khoản',

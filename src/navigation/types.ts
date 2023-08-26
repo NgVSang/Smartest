@@ -11,6 +11,10 @@ export type RootStackParamList = {
     id: number;
     car: ICar;
   };
+  Infringe: undefined;
+  InfringeDetail: {
+    search: string;
+  };
 };
 
 export type BottomNavigate = {

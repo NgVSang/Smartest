@@ -7,3 +7,4 @@ export * from './Registry';
 export * from './Footer';
 export * from './CarInformation';
 export * from './HistoryRegistry';
+export * from './Infringe';

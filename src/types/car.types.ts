@@ -6,3 +6,10 @@ export interface ICar {
   date?: string;
   plan_date?: string;
 }
+
+export interface IInfringe {
+  id: number;
+  name: string;
+  date: string;
+  handlingAgency?: string;
+}

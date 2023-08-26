@@ -1,6 +1,6 @@
 export const converLicensePlate = (license_plate: string) => {
   if (license_plate) {
-    if (isNaN(parseInt(license_plate[3])))
+    if (/[a-zA-Z]/.test(license_plate[3]))
       return license_plate
         ? license_plate.slice(0, 4) +
             ' - ' +
@@ -11,6 +11,21 @@ export const converLicensePlate = (license_plate: string) => {
         ? license_plate.slice(0, 3) +
             ' - ' +
             license_plate.slice(3, license_plate.length)
+        : '';
+  } else return '';
+};
+
+export const reConvertLicensePlate = (license_plate: string) => {
+  if (license_plate) {
+    if (/[a-zA-Z]/.test(license_plate[3]))
+      return license_plate
+        ? license_plate.slice(0, 4) +
+            license_plate.slice(7, license_plate.length)
+        : '';
+    else
+      return license_plate
+        ? license_plate.slice(0, 3) +
+            license_plate.slice(6, license_plate.length)
         : '';
   } else return '';
 };

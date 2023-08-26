@@ -1,4 +1,4 @@
-import {ICar} from '../../types';
+import {ICar, IInfringe} from '../../types';
 import instance from './axios';
 
 const ENDPOINTS = {
@@ -46,12 +46,15 @@ const get_car_type = (categoryId: number) => {
   });
 };
 
-const get_err_by_licensePlate = (licensePlate: string) => {
-  return instance.get(ENDPOINTS.GETERRORBYCAR, {
-    params: {
-      licensePlate,
+const getInfringeByLicensePlate = (licensePlate: string) => {
+  return instance.get<{rows: IInfringe[]; recordsTotal: number}>(
+    ENDPOINTS.GETERRORBYCAR,
+    {
+      params: {
+        licensePlate,
+      },
     },
-  });
+  );
 };
 
 const add_new_car = (data: any) => {
@@ -125,7 +128,7 @@ export const CarApi = {
   get_err_car,
   get_category,
   get_car_type,
-  get_err_by_licensePlate,
+  getInfringeByLicensePlate,
   add_new_car,
   get_carInfor_byId,
   delete_car_byId,

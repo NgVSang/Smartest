@@ -10,6 +10,8 @@ import {
   CarListScreen,
   HistoryRegistryDetailScreen,
   HistoryRegistryScreen,
+  InfringeDetailScreen,
+  InfringeScreen,
   RegistrationListScreen,
 } from '../screens';
 import BottomNavigattion from './BottomNavigattion';
@@ -65,6 +67,8 @@ const RootNavigator: FC = () => {
           name="HistoryRegistryDetail"
           component={HistoryRegistryDetailScreen}
         />
+        <Stack.Screen name="Infringe" component={InfringeScreen} />
+        <Stack.Screen name="InfringeDetail" component={InfringeDetailScreen} />
       </Stack.Navigator>
     </NavigationContainer>
   );
