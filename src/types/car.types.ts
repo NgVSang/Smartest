@@ -13,3 +13,21 @@ export interface IInfringe {
   date: string;
   handlingAgency?: string;
 }
+
+export interface ICarDetail {
+  id: number;
+  license_plates: string;
+  manufacture_at: number;
+  type: {
+    id: number;
+    name: string;
+  };
+  category: {
+    id: number;
+    name: string;
+  };
+  display_images: {
+    id: number;
+    url: string;
+  }[];
+}

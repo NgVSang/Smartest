@@ -1,4 +1,4 @@
-export const converLicensePlate = (license_plate: string) => {
+export const converLicensePlate = (license_plate?: string) => {
   if (license_plate) {
     if (/[a-zA-Z]/.test(license_plate[3]))
       return license_plate
@@ -15,7 +15,7 @@ export const converLicensePlate = (license_plate: string) => {
   } else return '';
 };
 
-export const reConvertLicensePlate = (license_plate: string) => {
+export const reConvertLicensePlate = (license_plate?: string) => {
   if (license_plate) {
     if (/[a-zA-Z]/.test(license_plate[3]))
       return license_plate

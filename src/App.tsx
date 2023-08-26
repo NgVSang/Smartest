@@ -6,6 +6,7 @@ import Toast from 'react-native-toast-message';
 import {toastConfig} from './utils/toast';
 import RootNavigator from './navigation';
 import {View} from 'react-native';
+import {PopUpModal} from './components';
 
 function App(): JSX.Element {
   return (
@@ -14,7 +15,8 @@ function App(): JSX.Element {
         <SafeAreaProvider>
           <View style={{flex: 1}}>
             <RootNavigator />
-            <Toast position="bottom" config={toastConfig} />
+            <Toast position="top" config={toastConfig} />
+            <PopUpModal />
           </View>
         </SafeAreaProvider>
       </PersistGate>

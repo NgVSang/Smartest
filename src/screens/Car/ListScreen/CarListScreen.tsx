@@ -6,7 +6,7 @@ import {styles} from './CarListScreen.styled';
 import {CarApi} from '../../../services/api/car.api';
 import {ICar} from '../../../types';
 
-const CarListScreen: FC<CarListScreenProps> = ({}) => {
+const CarListScreen: FC<CarListScreenProps> = ({navigation}) => {
   const [isLoading, setIsLoading] = React.useState(false);
   const [data, setData] = useState<ICar[]>([]);
 
@@ -42,6 +42,11 @@ const CarListScreen: FC<CarListScreenProps> = ({}) => {
         {data.map(car => (
           <CarInformation
             data={car}
+            onPress={() => {
+              navigation.push('CarDetail', {
+                id: car.id,
+              });
+            }}
             key={car.id}
             style={{marginVertical: 10}}
           />

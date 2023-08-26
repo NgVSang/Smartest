@@ -1,4 +1,4 @@
-import {ICar, IInfringe} from '../../types';
+import {ICar, ICarDetail, IInfringe} from '../../types';
 import instance from './axios';
 
 const ENDPOINTS = {
@@ -72,15 +72,15 @@ const add_new_car = (data: any) => {
   });
 };
 
-const get_carInfor_byId = (carId: number) => {
-  return instance.get(ENDPOINTS.GETCARINFOR, {
+const getCarById = (carId: number) => {
+  return instance.get<ICarDetail>(ENDPOINTS.GETCARINFOR, {
     params: {
       carId: carId,
     },
   });
 };
 
-const delete_car_byId = (carId: number) => {
+const deleteCarById = (carId: number) => {
   return instance.delete(ENDPOINTS.GETCARINFOR, {
     params: {
       carId: carId,
@@ -130,8 +130,8 @@ export const CarApi = {
   get_car_type,
   getInfringeByLicensePlate,
   add_new_car,
-  get_carInfor_byId,
-  delete_car_byId,
+  getCarById,
+  deleteCarById,
   update_car_byId,
   get_list_file,
   get_limit_vehicles_by_date,

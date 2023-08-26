@@ -6,6 +6,9 @@ export type RootStackParamList = {
   Bottom: NavigatorScreenParams<BottomNavigate> | undefined;
   RegistriesList: undefined;
   CarList: undefined;
+  CarDetail: {
+    id: number;
+  };
   HistoryRegistry: undefined;
   HistoryRegistryDetail: {
     id: number;
@@ -15,6 +18,7 @@ export type RootStackParamList = {
   InfringeDetail: {
     search: string;
   };
+  Profile: undefined;
 };
 
 export type BottomNavigate = {

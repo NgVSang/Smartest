@@ -8,3 +8,4 @@ export * from './Footer';
 export * from './CarInformation';
 export * from './HistoryRegistry';
 export * from './Infringe';
+export * from './PopUpModal';

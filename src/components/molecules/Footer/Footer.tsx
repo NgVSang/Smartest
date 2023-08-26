@@ -30,6 +30,7 @@ const Footer: FC<FooterProps> = ({
           title={buttonCancelContent}
           onPress={handleCancel}
           style={[styles.cancel_btn]}
+          disabled={disabled}
           titleStyle={{...styles.footer_text, color: colors.DARKER_BLUE}}
         />
       )}

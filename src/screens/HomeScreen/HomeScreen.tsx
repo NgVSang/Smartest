@@ -50,7 +50,9 @@ const HomeScreen: FC<HomeScreenProps> = ({navigation}) => {
       {
         name: 'Thông tin tài khoản',
         icon: require('../../assets/icons/profile_icon.png'),
-        onPress: () => {},
+        onPress: () => {
+          navigation.push('Profile');
+        },
       },
     ];
   }, []);
@@ -66,8 +68,7 @@ const HomeScreen: FC<HomeScreenProps> = ({navigation}) => {
         ]}>
         <TouchableOpacity
           style={styles.header_left}
-          // onPress={() => navigation.push('Profile')}
-        >
+          onPress={() => navigation.push('Profile')}>
           <Image
             source={{uri: BASE_URL + info?.avatar}}
             style={{

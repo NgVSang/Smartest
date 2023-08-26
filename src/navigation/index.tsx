@@ -7,11 +7,13 @@ import {RootStackParamList} from './types';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import {
   AuthScreen,
+  CarDetailScreen,
   CarListScreen,
   HistoryRegistryDetailScreen,
   HistoryRegistryScreen,
   InfringeDetailScreen,
   InfringeScreen,
+  ProfileScreen,
   RegistrationListScreen,
 } from '../screens';
 import BottomNavigattion from './BottomNavigattion';
@@ -69,6 +71,8 @@ const RootNavigator: FC = () => {
         />
         <Stack.Screen name="Infringe" component={InfringeScreen} />
         <Stack.Screen name="InfringeDetail" component={InfringeDetailScreen} />
+        <Stack.Screen name="Profile" component={ProfileScreen} />
+        <Stack.Screen name="CarDetail" component={CarDetailScreen} />
       </Stack.Navigator>
     </NavigationContainer>
   );

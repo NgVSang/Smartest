@@ -8,3 +8,4 @@ export * from './HistoryRegistryScreen';
 export * from './HistoryRegistryDetailScreen';
 export * from './InfringeScreen';
 export * from './InfringeDetailScreen';
+export * from './ProfileScreen';
