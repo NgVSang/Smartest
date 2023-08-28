@@ -31,3 +31,9 @@ export interface ICarDetail {
     url: string;
   }[];
 }
+
+export interface IRequired {
+  id: number;
+  name: string;
+  status: 1;
+}

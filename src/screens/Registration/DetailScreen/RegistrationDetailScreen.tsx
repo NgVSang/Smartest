@@ -32,6 +32,7 @@ const RegistrationDetailScreen: FC<RegistrationDetailScreenProps> = ({
   const handleGetData = useCallback(async () => {
     try {
       setIsLoading(true);
+      setData(undefined);
       const res = await RegistryApi.getRegitryDetail(id);
       if (res.status === 1) {
         setData(res.data);

@@ -29,6 +29,7 @@ const CarDetailScreen: FC<CarDetailScreenProps> = ({navigation, route}) => {
   const handleGetData = useCallback(async () => {
     try {
       setIsLoading(true);
+      setData(undefined);
       const res = await CarApi.getCarById(id);
       if (res.status === 1) {
         setData(res.data);
@@ -101,40 +102,51 @@ const CarDetailScreen: FC<CarDetailScreenProps> = ({navigation, route}) => {
         refreshControl={
           <RefreshControl refreshing={isLoading} onRefresh={handleGetData} />
         }>
-        <View style={styles.group}>
-          <Text style={styles.group_title}>Biển số xe</Text>
-          <Text style={styles.group_content}>
-            {converLicensePlate(data?.license_plates)}
-          </Text>
-        </View>
-        <View style={styles.group}>
-          <Text style={styles.group_title}>Chủng loại phương tiện</Text>
-          <Text style={styles.group_content}>{data?.category.name}</Text>
-        </View>
-        <View style={styles.group}>
-          <Text style={styles.group_title}>Loại phương tiện</Text>
-          <Text style={styles.group_content}>{data?.type.name}</Text>
-        </View>
-        <View style={styles.group}>
-          <Text style={styles.group_title}>Năm sản xuất</Text>
-          <Text style={styles.group_content}>{data?.manufacture_at}</Text>
-        </View>
-        <View style={styles.photo}>
-          <Text style={styles.photo_title}>Hình ảnh</Text>
-          <View style={styles.photo_group}>
-            {data?.display_images.map((image, index) => (
-              <Image
-                key={index}
-                source={{uri: BASE_URL + image.url}}
-                style={styles.photo_style}
-              />
-            ))}
-          </View>
-        </View>
+        {data && (
+          <>
+            <View style={styles.group}>
+              <Text style={styles.group_title}>Biển số xe</Text>
+              <Text style={styles.group_content}>
+                {converLicensePlate(data.license_plates)}
+              </Text>
+            </View>
+            <View style={styles.group}>
+              <Text style={styles.group_title}>Chủng loại phương tiện</Text>
+              <Text style={styles.group_content}>{data.category.name}</Text>
+            </View>
+            <View style={styles.group}>
+              <Text style={styles.group_title}>Loại phương tiện</Text>
+              <Text style={styles.group_content}>{data.type.name}</Text>
+            </View>
+            <View style={styles.group}>
+              <Text style={styles.group_title}>Năm sản xuất</Text>
+              <Text style={styles.group_content}>{data.manufacture_at}</Text>
+            </View>
+            <View style={styles.photo}>
+              <Text style={styles.photo_title}>Hình ảnh</Text>
+              <View style={styles.photo_group}>
+                {data.display_images.map((image, index) => (
+                  <Image
+                    key={index}
+                    source={{uri: BASE_URL + image.url}}
+                    style={styles.photo_style}
+                  />
+                ))}
+              </View>
+            </View>
+          </>
+        )}
       </ScrollView>
       <Footer
         buttonOkContent={'Cập nhật'}
-        onClickButtonOk={() => {}}
+        onClickButtonOk={() => {
+          if (data) {
+            navigation.push('UpdateCar', {
+              id: id,
+              data: data,
+            });
+          }
+        }}
         buttonCancelContent="XÓA"
         onClickButtonCancel={handleDelete}
         style={{

@@ -13,6 +13,7 @@ const CarListScreen: FC<CarListScreenProps> = ({navigation}) => {
   const handleGetData = useCallback(async () => {
     try {
       setIsLoading(true);
+      setData([]);
       const res = await CarApi.getListCar();
       if (res.status === 1) {
         setData(res.data.rows);

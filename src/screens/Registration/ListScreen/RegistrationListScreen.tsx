@@ -16,6 +16,7 @@ const RegistrationListScreen: FC<RegistrationListScreenProps> = ({
   const handleGetData = useCallback(async () => {
     try {
       setIsLoading(true);
+      setData([]);
       const res = await RegistryApi.getListRegistries();
       if (res.status === 1) {
         setData(res.data.rows);
@@ -64,7 +65,12 @@ const RegistrationListScreen: FC<RegistrationListScreenProps> = ({
           </View>
         ))}
       </ScrollView>
-      <Footer buttonOkContent={'Tạo đăng kí mới'} onClickButtonOk={() => {}} />
+      <Footer
+        buttonOkContent={'Tạo đăng kí mới'}
+        onClickButtonOk={() => {
+          navigation.push('CreateRegistryTime');
+        }}
+      />
     </View>
   );
 };

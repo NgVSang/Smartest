@@ -10,6 +10,8 @@ import {
   CarDetailScreen,
   CarListScreen,
   CreateCarScreen,
+  CreateRegistryInforScreen,
+  CreateRegistryTimeScreen,
   HistoryRegistryDetailScreen,
   HistoryRegistryScreen,
   InfringeDetailScreen,
@@ -17,6 +19,7 @@ import {
   ProfileScreen,
   RegistrationDetailScreen,
   RegistrationListScreen,
+  UpdateCarScreen,
 } from '../screens';
 import BottomNavigattion from './BottomNavigattion';
 import {useSelector} from 'react-redux';
@@ -107,6 +110,15 @@ const RootNavigator: FC = () => {
         <Stack.Screen
           name="RegistryDetail"
           component={RegistrationDetailScreen}
+        />
+        <Stack.Screen name="UpdateCar" component={UpdateCarScreen} />
+        <Stack.Screen
+          name="CreateRegistryTime"
+          component={CreateRegistryTimeScreen}
+        />
+        <Stack.Screen
+          name="CreateRegistryInfor"
+          component={CreateRegistryInforScreen}
         />
       </Stack.Navigator>
     </NavigationContainer>

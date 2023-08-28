@@ -1,5 +1,5 @@
 import {NavigatorScreenParams} from '@react-navigation/native';
-import {ICar} from '../types';
+import {ICar, ICarDetail} from '../types';
 
 export type RootStackParamList = {
   Auth: undefined;
@@ -8,11 +8,20 @@ export type RootStackParamList = {
   RegistryDetail: {
     id: number;
   };
+  CreateRegistryDetail: undefined;
+  CreateRegistryTime: {
+    carId?: number;
+  };
+  CreateRegistryInfor: undefined;
   CarList: undefined;
   CarDetail: {
     id: number;
   };
   CreateCar: undefined;
+  UpdateCar: {
+    id: number;
+    data: ICarDetail;
+  };
   HistoryRegistry: undefined;
   HistoryRegistryDetail: {
     id: number;

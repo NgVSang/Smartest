@@ -1,5 +1,5 @@
 import {StyleSheet} from 'react-native';
-import {fonts} from '../../../constants';
+import {colors, fonts} from '../../../constants';
 
 export const styles = StyleSheet.create({
   box: {
@@ -74,5 +74,6 @@ export const styles = StyleSheet.create({
     textAlign: 'center',
     fontFamily: fonts.BE_VIETNAM_PRO_REGULAR,
     fontSize: 9,
+    color: colors.DARK_BLUE,
   },
 });

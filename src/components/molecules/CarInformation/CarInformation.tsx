@@ -3,9 +3,10 @@ import React, {FC, useCallback} from 'react';
 import {CarInformationProps} from './CarInformation.types';
 import {styles} from './CarInformation.styled';
 import {BASE_URL} from '../../../config';
-import {fonts} from '../../../constants';
+import {colors, fonts} from '../../../constants';
 import {converLicensePlate} from '../../../utils/string';
 import dayjs from 'dayjs';
+import {NavigationService} from '../../../services/navigation';
 
 const CarInformation: FC<CarInformationProps> = ({data, onPress, style}) => {
   const now = dayjs(new Date()).format('YYYY-MM-DD');
@@ -44,6 +45,7 @@ const CarInformation: FC<CarInformationProps> = ({data, onPress, style}) => {
                 textAlign: 'center',
                 fontFamily: fonts.BE_VIETNAM_PRO_REGULAR,
                 fontSize: 13,
+                color: colors.DARK_BLUE,
               }}>
               Chưa thêm ảnh
             </Text>
@@ -74,11 +76,12 @@ const CarInformation: FC<CarInformationProps> = ({data, onPress, style}) => {
             <TouchableOpacity
               style={styles.content_box}
               onPress={() => {
-                // NavigationService.navigate('Registration/Add', {
-                //   carIndex: carIndex,
-                //   Id: data.id,
-                //   license: data.license_plates,
-                // })
+                NavigationService.push<'CreateRegistryTime'>(
+                  'CreateRegistryTime',
+                  {
+                    carId: data.id,
+                  },
+                );
               }}>
               <Text style={styles.content_box_style}>
                 Đăng ký đăng kiểm ngay

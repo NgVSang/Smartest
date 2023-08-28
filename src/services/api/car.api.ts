@@ -68,7 +68,6 @@ const createCar = (data: any) => {
       type: 'image/jpeg',
       name: data.photos[i].fileName,
     });
-    console.log(data.photos[i]);
   }
   return instance.post(ENDPOINTS.ADDNEWCAR, formData, {
     headers: {
@@ -93,17 +92,21 @@ const deleteCarById = (carId: number) => {
   });
 };
 
-const update_car_byId = (carId: number, data: any) => {
+const updateCarById = (carId: number, data: any) => {
   const formData = new FormData();
   formData.append('license_plate', data.license_plate);
   formData.append('manufacture_at', data.manufacture_at);
   formData.append('type', data.type);
   for (let i = 0; i < data.delete.length; i++) {
-    if (i == 0) formData.append('delete[0]', data.delete[i]);
+    if (i === 0) formData.append('delete[0]', data.delete[i]);
     else formData.append('delete', data.delete[i]);
   }
   for (let i = 0; i < data.photos.length; i++) {
-    formData.append('photos', data.photos[i]);
+    formData.append('photos', {
+      uri: data.photos[i].uri,
+      type: 'image/jpeg',
+      name: data.photos[i].fileName,
+    });
   }
   return instance.put(ENDPOINTS.GETCARINFOR, formData, {
     headers: {
@@ -115,7 +118,7 @@ const update_car_byId = (carId: number, data: any) => {
   });
 };
 
-const get_list_file = () => {
+const getListRequired = () => {
   return instance.get(ENDPOINTS.GETFLIE);
 };
 const get_limit_vehicles_by_date = (date: string) => {
@@ -137,7 +140,7 @@ export const CarApi = {
   createCar,
   getCarById,
   deleteCarById,
-  update_car_byId,
-  get_list_file,
+  updateCarById,
+  getListRequired,
   get_limit_vehicles_by_date,
 };

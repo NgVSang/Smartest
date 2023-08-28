@@ -54,6 +54,7 @@ export const styles = StyleSheet.create({
     textAlign: 'center',
     fontFamily: fonts.BE_VIETNAM_PRO_REGULAR,
     fontSize: 9,
+    color: colors.DARK_BLUE,
   },
   textStyled: {
     color: colors.BLUE,

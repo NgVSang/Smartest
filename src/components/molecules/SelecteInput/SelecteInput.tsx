@@ -10,7 +10,7 @@ import {
 import React, {FC, useCallback, useMemo, useState} from 'react';
 import {DropDownItem, SelecteInputProps} from './SelecteInput.types';
 import {styles} from './SelecteInput.styled';
-import {colors} from '../../../constants';
+import {colors, fonts} from '../../../constants';
 
 const SelecteInput: FC<SelecteInputProps> = ({
   items,
@@ -79,7 +79,15 @@ const SelecteInput: FC<SelecteInputProps> = ({
     <View {...props}>
       <Text style={styles.label}>{label}</Text>
       <TouchableOpacity style={styles.dropdown} onPress={() => setOpen(!open)}>
-        <Text>{selectedValue ? selectedValue.name : placeholder}</Text>
+        <Text
+          style={{
+            fontFamily: fonts.BE_VIETNAM_PRO_SEMIBOLD,
+            fontSize: 14,
+            fontWeight: '600',
+            color: '#2C3442',
+          }}>
+          {selectedValue ? selectedValue.name : placeholder}
+        </Text>
       </TouchableOpacity>
       {renderPicker}
     </View>
