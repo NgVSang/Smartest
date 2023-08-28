@@ -9,11 +9,13 @@ import {
   AuthScreen,
   CarDetailScreen,
   CarListScreen,
+  CreateCarScreen,
   HistoryRegistryDetailScreen,
   HistoryRegistryScreen,
   InfringeDetailScreen,
   InfringeScreen,
   ProfileScreen,
+  RegistrationDetailScreen,
   RegistrationListScreen,
 } from '../screens';
 import BottomNavigattion from './BottomNavigattion';
@@ -21,7 +23,7 @@ import {useSelector} from 'react-redux';
 import {authSelector} from '../redux';
 import {NavigationService} from '../services/navigation';
 import {setHeaderConfigAxios} from '../services/api';
-import {View} from 'react-native';
+import {Alert, BackHandler, View} from 'react-native';
 import {colors} from '../constants';
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
@@ -40,6 +42,34 @@ const RootNavigator: FC = () => {
       setHeaderConfigAxios(access_token);
     }
     setIsLoading(false);
+  }, []);
+
+  useEffect(() => {
+    // Custom BackHandler listener
+    const handleBackPress = () => {
+      if (NavigationService.canGoBack()) {
+        NavigationService.pop();
+      } else {
+        Alert.alert('Thoát', 'Bạn có muốn đóng ứng dụng không?', [
+          {
+            text: 'Cancel',
+            onPress: () => {},
+          },
+          {
+            text: 'Ok',
+            onPress: () => {
+              BackHandler.exitApp();
+            },
+          },
+        ]);
+      }
+      return true;
+    };
+    BackHandler.addEventListener('hardwareBackPress', handleBackPress);
+    // Remove listener
+    return () => {
+      BackHandler.removeEventListener('hardwareBackPress', handleBackPress);
+    };
   }, []);
 
   if (isLoading) {
@@ -73,6 +103,11 @@ const RootNavigator: FC = () => {
         <Stack.Screen name="InfringeDetail" component={InfringeDetailScreen} />
         <Stack.Screen name="Profile" component={ProfileScreen} />
         <Stack.Screen name="CarDetail" component={CarDetailScreen} />
+        <Stack.Screen name="CreateCar" component={CreateCarScreen} />
+        <Stack.Screen
+          name="RegistryDetail"
+          component={RegistrationDetailScreen}
+        />
       </Stack.Navigator>
     </NavigationContainer>
   );

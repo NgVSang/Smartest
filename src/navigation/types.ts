@@ -5,10 +5,14 @@ export type RootStackParamList = {
   Auth: undefined;
   Bottom: NavigatorScreenParams<BottomNavigate> | undefined;
   RegistriesList: undefined;
+  RegistryDetail: {
+    id: number;
+  };
   CarList: undefined;
   CarDetail: {
     id: number;
   };
+  CreateCar: undefined;
   HistoryRegistry: undefined;
   HistoryRegistryDetail: {
     id: number;

@@ -40,9 +40,18 @@ const getRegitryDetail = (registryId: number) => {
   });
 };
 
+const deleteRegistration = (registryId: number) => {
+  return instance.get(ENDPOINTS.REGISTRATIONINFOR, {
+    params: {
+      registryId: registryId,
+    },
+  });
+};
+
 export const RegistryApi = {
   getFutureRegistries,
   getListRegistries,
   getHistoryRegistries,
   getRegitryDetail,
+  deleteRegistration,
 };

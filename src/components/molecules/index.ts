@@ -9,3 +9,5 @@ export * from './CarInformation';
 export * from './HistoryRegistry';
 export * from './Infringe';
 export * from './PopUpModal';
+export * from './SelecteInput';
+export * from './FeeContent';

@@ -34,11 +34,11 @@ const get_err_car = (carId: number) => {
   return instance.get(ENDPOINTS.GETERROR + '/' + carId);
 };
 
-const get_category = () => {
+const getCarCategory = () => {
   return instance.get(ENDPOINTS.GETCATEGORY);
 };
 
-const get_car_type = (categoryId: number) => {
+const getCarType = (categoryId: number) => {
   return instance.get(ENDPOINTS.GETCARTYPE, {
     params: {
       categoryId,
@@ -57,13 +57,18 @@ const getInfringeByLicensePlate = (licensePlate: string) => {
   );
 };
 
-const add_new_car = (data: any) => {
+const createCar = (data: any) => {
   const formData = new FormData();
   formData.append('license_plate', data.license_plate);
   formData.append('manufacture_at', data.manufacture_at);
   formData.append('type', data.type);
   for (let i = 0; i < data.photos.length; i++) {
-    formData.append('photos', data.photos[i]);
+    formData.append('photos', {
+      uri: data.photos[i].uri,
+      type: 'image/jpeg',
+      name: data.photos[i].fileName,
+    });
+    console.log(data.photos[i]);
   }
   return instance.post(ENDPOINTS.ADDNEWCAR, formData, {
     headers: {
@@ -126,10 +131,10 @@ export const CarApi = {
   check_registry,
   check_error,
   get_err_car,
-  get_category,
-  get_car_type,
+  getCarCategory,
+  getCarType,
   getInfringeByLicensePlate,
-  add_new_car,
+  createCar,
   getCarById,
   deleteCarById,
   update_car_byId,

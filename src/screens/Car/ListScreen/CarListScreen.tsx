@@ -52,7 +52,12 @@ const CarListScreen: FC<CarListScreenProps> = ({navigation}) => {
           />
         ))}
       </ScrollView>
-      <Footer buttonOkContent="Thêm thông tin xe" onClickButtonOk={() => {}} />
+      <Footer
+        buttonOkContent="Thêm thông tin xe"
+        onClickButtonOk={() => {
+          navigation.push('CreateCar');
+        }}
+      />
     </View>
   );
 };

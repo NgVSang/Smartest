@@ -54,9 +54,9 @@ const RegistrationListScreen: FC<RegistrationListScreenProps> = ({
                   data={registration}
                   style={styles.box_style}
                   onPress={() => {
-                    // navigation.navigate('Registration/Detail', {
-                    //   registryId: registration.id,
-                    // })
+                    navigation.push('RegistryDetail', {
+                      id: registration.id,
+                    });
                   }}
                 />
               ))}

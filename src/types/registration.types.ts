@@ -27,7 +27,8 @@ export interface IHistoryRegistry {
 
 export interface IRegistrationDetail {
   id: number;
-  license_plate: string;
+  license_plate?: string;
+  license_plates?: string;
   carId: number;
   date: string;
   registry_time?: string;
