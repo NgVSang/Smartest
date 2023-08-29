@@ -9,3 +9,4 @@ export * from './HistoryRegistryDetailScreen';
 export * from './InfringeScreen';
 export * from './InfringeDetailScreen';
 export * from './ProfileScreen';
+export * from './HomeAdminScreen';

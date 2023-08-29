@@ -1,19 +1,19 @@
-import {StyleSheet, Text} from 'react-native';
-import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
+import {StyleSheet, Text, View} from 'react-native';
 import React, {FC} from 'react';
-import {BottomNavigate} from './types';
-import {HomeScreen, HotlineScreen, NotificationScreen} from '../screens';
-import {colors, fonts} from '../constants';
+import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
+import {AdminBottom} from './types';
 import {TabBottomItem} from '../components';
+import {colors, fonts} from '../constants';
+import {HomeAdminScreen, NotificationScreen} from '../screens';
 
-const Tab = createBottomTabNavigator<BottomNavigate>();
+const Tab = createBottomTabNavigator<AdminBottom>();
 
-const BottomNavigattion: FC = () => {
+const AdminBottomNavigation: FC = () => {
   return (
     <Tab.Navigator>
       <Tab.Screen
         name="HomeTab"
-        component={HomeScreen}
+        component={HomeAdminScreen}
         options={{
           tabBarLabel: props => (
             <Text
@@ -59,35 +59,11 @@ const BottomNavigattion: FC = () => {
           headerShown: false,
         }}
       />
-      <Tab.Screen
-        name="Hotline"
-        component={HotlineScreen}
-        options={{
-          tabBarLabel: props => (
-            <Text
-              style={[
-                styles.tabBarText,
-                {
-                  color: props.focused ? colors.BLUE : colors.DARK_BLUE,
-                },
-              ]}>
-              GỌI HOTLINE
-            </Text>
-          ),
-          tabBarIcon: props => (
-            <TabBottomItem
-              props={props}
-              icon={require('../assets/icons/phone_call_icon.png')}
-            />
-          ),
-          headerShown: false,
-        }}
-      />
     </Tab.Navigator>
   );
 };
 
-export default BottomNavigattion;
+export default AdminBottomNavigation;
 
 const styles = StyleSheet.create({
   iconProvider: {},

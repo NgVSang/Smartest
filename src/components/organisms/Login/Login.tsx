@@ -3,7 +3,6 @@ import React, {FC, useCallback, useState} from 'react';
 import {LoginProps} from './Login.types';
 import {styles} from './Login.styled';
 import {AuthInput, FormHelper} from '../../molecules';
-import {LoginStructure} from './Login.constants';
 import {ErrorMessage, Field, FieldProps, Formik} from 'formik';
 import {LoginSchema} from '../../../services/validators';
 import {IFormData} from '../../../types';
@@ -22,7 +21,7 @@ const Login: FC<LoginProps> = ({}) => {
     setIsLoading(true);
     try {
       const dataSend = {
-        phone_number: data.phone_number,
+        phone_number: data.account,
         password: data.password,
       };
       const res = await AuthApi.login(dataSend);
@@ -37,11 +36,29 @@ const Login: FC<LoginProps> = ({}) => {
         ],
       });
     } catch (error: any) {
-      Toast.show({
-        type: 'error',
-        text1: error.message || 'Tài khoản hoặc mật khẩu không đúng!',
-        text2: 'Vui lòng thử lại.',
-      });
+      try {
+        const dataSend = {
+          username: data.account,
+          password: data.password,
+        };
+        const res = await AuthApi.adminLogin(dataSend);
+        dispatch(setCredential(res.data));
+        setHeaderConfigAxios(res.data.access_token);
+        NavigationService.reset({
+          index: 0,
+          routes: [
+            {
+              name: 'AdminBottom',
+            },
+          ],
+        });
+      } catch (error: any) {
+        Toast.show({
+          type: 'error',
+          text1: error.message || 'Tài khoản hoặc mật khẩu không đúng!',
+          text2: 'Vui lòng thử lại.',
+        });
+      }
     } finally {
       setIsLoading(false);
     }
@@ -54,19 +71,19 @@ const Login: FC<LoginProps> = ({}) => {
           <Text style={styles.title_style}>Đăng nhập</Text>
         </View>
         <Formik
-          initialValues={{phone_number: '', password: ''}}
+          initialValues={{account: '', password: ''}}
           validationSchema={LoginSchema}
           onSubmit={handleLogin}>
           {({handleSubmit}) => (
             <View style={styles.form_group}>
               <View style={styles.form_input}>
-                <Field name="phone_number">
+                <Field name="account">
                   {({field, form}: FieldProps) => (
                     <AuthInput
                       form={form}
                       field={field}
-                      title="Điện thoại"
-                      keyboardType="numeric"
+                      title="Số điện thoại hoặc tên đăng nhập"
+                      keyboardType="default"
                       placeholder="Nhập"
                     />
                   )}

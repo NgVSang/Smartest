@@ -1,13 +1,17 @@
-import {Image, ScrollView, StyleSheet, Text, View} from 'react-native';
+import {Alert, Image, ScrollView, StyleSheet, Text, View} from 'react-native';
 import React, {FC, useCallback, useEffect, useMemo, useState} from 'react';
 import {CreateRegistryTimeScreenProps} from './CreateRegistryTimeScreen.types';
 import {DateInput, Footer, Header, SelecteInput} from '../../../components';
 import {styles} from './CreateRegistryTimeScreen.styled';
-import {Field, FieldProps, Formik} from 'formik';
+import {ErrorMessage, Field, FieldProps, Formik} from 'formik';
 import {ICar, IFormData, IRequired} from '../../../types';
 import {CarApi} from '../../../services/api/car.api';
-import {converLicensePlate} from '../../../utils/string';
-import {fonts} from '../../../constants';
+import {converLicensePlate, convertDate} from '../../../utils/string';
+import {colors, fonts} from '../../../constants';
+import {RegistryApi} from '../../../services/api';
+import Toast from 'react-native-toast-message';
+import {RegistryTimeSchema} from '../../../services/validators';
+import dayjs from 'dayjs';
 
 const CreateRegistryTimeScreen: FC<CreateRegistryTimeScreenProps> = ({
   navigation,
@@ -16,6 +20,7 @@ const CreateRegistryTimeScreen: FC<CreateRegistryTimeScreenProps> = ({
   const carId = route.params?.carId;
   const [cars, setCars] = useState<ICar[]>([]);
   const [required, setRequired] = useState<IRequired[]>([]);
+  const [loadingSubmit, setLoadingSubmit] = React.useState(false);
 
   const handleGetData = useCallback(async () => {
     try {
@@ -56,8 +61,46 @@ const CreateRegistryTimeScreen: FC<CreateRegistryTimeScreenProps> = ({
     handelGetRequired();
   }, []);
 
-  const handleSubmit = useCallback((data: IFormData) => {
-    console.log(data);
+  const handleSubmit = useCallback(async (data: IFormData) => {
+    try {
+      setLoadingSubmit(true);
+      const check = await RegistryApi.checkRegistry(data.car);
+      if (check.data.isValid === true) {
+        const limit = await CarApi.getLimitVehiclesByDate(
+          convertDate(data.date),
+        );
+        if (limit.data.amount_registries >= limit.data.number_vehicles) {
+          Alert.alert(
+            'Cảnh báo!',
+            'Khung giờ này hiện đang có nhiều đăng ký cùng lúc và có thể sẽ cần đợi xử lý lâu hơn',
+            [
+              {
+                text: 'Hủy',
+              },
+              {
+                text: 'Tiếp tục',
+                onPress: () => {
+                  navigation.push('CreateRegistryInfor');
+                },
+              },
+            ],
+          );
+        } else {
+          navigation.push('CreateRegistryInfor');
+        }
+      } else {
+        //@ts-ignore
+        throw new Error(check.message);
+      }
+    } catch (error: any) {
+      Toast.show({
+        type: 'error',
+        text1: 'Đăng ký không thành công',
+        text2: error.message || 'Vui lòng thử lại ',
+      });
+    } finally {
+      setLoadingSubmit(false);
+    }
   }, []);
 
   return (
@@ -65,8 +108,11 @@ const CreateRegistryTimeScreen: FC<CreateRegistryTimeScreenProps> = ({
       <Header title="Đăng ký đăng kiểm" />
       <Formik
         initialValues={{
-          car: carId || '0',
+          car: carId || '',
+          time: '',
+          date: '',
         }}
+        validationSchema={RegistryTimeSchema}
         onSubmit={handleSubmit}>
         {({handleSubmit, setValues, values}) => (
           <>
@@ -74,41 +120,76 @@ const CreateRegistryTimeScreen: FC<CreateRegistryTimeScreenProps> = ({
               <View style={styles.input_group}>
                 <Field name="car">
                   {({field, form}: FieldProps) => (
-                    <SelecteInput
-                      items={carOptions}
-                      style={styles.input_style}
-                      label="Loại phương tiện theo phí đường bộ"
-                      value={field.value}
-                      setValues={item => {
-                        field.onChange(field.name)(item.id.toString());
-                      }}
-                    />
+                    <View style={styles.input_style}>
+                      <SelecteInput
+                        items={carOptions}
+                        label="Loại phương tiện theo phí đường bộ"
+                        value={field.value}
+                        setValues={item => {
+                          field.onChange(field.name)(item.id.toString());
+                        }}
+                      />
+                      <View style={styles.error_message}>
+                        <ErrorMessage
+                          name={field.name}
+                          render={(errorMessage: string) => (
+                            <Text style={{color: colors.RED}}>
+                              {errorMessage}
+                            </Text>
+                          )}
+                        />
+                      </View>
+                    </View>
                   )}
                 </Field>
                 <View
                   style={[styles.input_style, {flexDirection: 'row', gap: 15}]}>
                   <Field name="date">
                     {({field, form}: FieldProps) => (
-                      <DateInput
-                        date={field.value}
-                        label="Ngày đăng ký"
-                        style={styles.input_picker}
-                        onChangeDate={field.onChange(field.name)}
-                      />
+                      <View style={styles.input_picker}>
+                        <DateInput
+                          date={field.value}
+                          label="Ngày đăng ký"
+                          onChangeDate={field.onChange(field.name)}
+                          onBlur={form.handleBlur(field.name)}
+                        />
+                        <View style={styles.error_message}>
+                          <ErrorMessage
+                            name={field.name}
+                            render={(errorMessage: string) => (
+                              <Text style={{color: colors.RED}}>
+                                {errorMessage}
+                              </Text>
+                            )}
+                          />
+                        </View>
+                      </View>
                     )}
                   </Field>
                   <Field name="time">
                     {({field, form}: FieldProps) => (
-                      <DateInput
-                        date={field.value}
-                        label="Giờ đăng ký"
-                        style={styles.input_picker}
-                        onChangeDate={field.onChange(field.name)}
-                        placeholder="hh:mm"
-                        option={{
-                          format: 'hh:mm',
-                        }}
-                      />
+                      <View style={styles.input_picker}>
+                        <DateInput
+                          date={field.value}
+                          label="Giờ đăng ký"
+                          onChangeDate={field.onChange(field.name)}
+                          placeholder="hh:mm"
+                          option={{
+                            format: 'hh:mm',
+                          }}
+                          onBlur={form.handleBlur(field.name)}
+                        />
+                        <View style={styles.error_message}>
+                          <ErrorMessage
+                            name={field.name}
+                            render={(errorMessage: string) => (
+                              <Text style={{color: colors.RED}}>
+                                {errorMessage}
+                              </Text>
+                            )}
+                          />
+                        </View>
+                      </View>
                     )}
                   </Field>
                 </View>
@@ -141,6 +222,8 @@ const CreateRegistryTimeScreen: FC<CreateRegistryTimeScreenProps> = ({
               onClickButtonOk={handleSubmit}
               buttonCancelContent="HỦY"
               style={styles.footer_style}
+              loading={loadingSubmit}
+              disabled={loadingSubmit}
             />
           </>
         )}

@@ -37,6 +37,9 @@ export const styles = StyleSheet.create({
     flex: 1,
     color: '#2C3442',
   },
+  error_message: {
+    marginTop: 5,
+  },
   rule_group: {
     marginTop: 25,
     width: '100%',

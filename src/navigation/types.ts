@@ -4,6 +4,7 @@ import {ICar, ICarDetail} from '../types';
 export type RootStackParamList = {
   Auth: undefined;
   Bottom: NavigatorScreenParams<BottomNavigate> | undefined;
+  AdminBottom: NavigatorScreenParams<AdminBottom> | undefined;
   RegistriesList: undefined;
   RegistryDetail: {
     id: number;
@@ -38,4 +39,9 @@ export type BottomNavigate = {
   HomeTab: undefined;
   NotificationTab: undefined;
   Hotline: undefined;
+};
+
+export type AdminBottom = {
+  HomeTab: undefined;
+  NotificationTab: undefined;
 };

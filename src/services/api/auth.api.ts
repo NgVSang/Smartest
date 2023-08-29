@@ -3,6 +3,7 @@ import instance from '../api/axios';
 
 const ENDPOINTS = {
   LOGIN: '/customer/auth/login',
+  LOGIN_ADMIN: '/employee/auth/login',
   LOGOUT: '/customer/auth/logout',
   GETHOTLINE: '/customer/registries/hot-line',
   RESETPROFILE: '/customer/auth/user',
@@ -24,7 +25,12 @@ const get_hotline = () => {
   return instance.get(ENDPOINTS.GETHOTLINE);
 };
 
+const adminLogin = (data: any) => {
+  return instance.post<LoginResponse>(ENDPOINTS.LOGIN_ADMIN, data);
+};
+
 export const AuthApi = {
   login,
   get_hotline,
+  adminLogin,
 };

@@ -48,3 +48,7 @@ export const convertPrice = (price?: number) => {
 export const formatDate = (date?: string) => {
   return date ? date.split('-').reverse().join('/') : '';
 };
+
+export const convertDate = (date?: string) => {
+  return date ? date.split('/').reverse().join('-') : '';
+};

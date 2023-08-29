@@ -28,11 +28,12 @@ import {NavigationService} from '../services/navigation';
 import {setHeaderConfigAxios} from '../services/api';
 import {Alert, BackHandler, View} from 'react-native';
 import {colors} from '../constants';
+import AdminBottomNavigation from './AdminBottomNavigation';
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
 const RootNavigator: FC = () => {
-  const {loggedin, access_token} = useSelector(authSelector);
+  const {loggedin, info, access_token} = useSelector(authSelector);
 
   const [isLoading, setIsLoading] = useState(true);
 
@@ -82,13 +83,20 @@ const RootNavigator: FC = () => {
   return (
     <NavigationContainer ref={navigationRef}>
       <Stack.Navigator
-        initialRouteName={loggedin ? 'Bottom' : 'Auth'}
+        initialRouteName={
+          loggedin && info
+            ? info.role_id === 1
+              ? 'Bottom'
+              : 'AdminBottom'
+            : 'Auth'
+        }
         screenOptions={{
           animation: 'simple_push',
           headerShown: false,
         }}>
         <Stack.Screen name="Auth" component={AuthScreen} />
         <Stack.Screen name="Bottom" component={BottomNavigattion} />
+        <Stack.Screen name="AdminBottom" component={AdminBottomNavigation} />
         <Stack.Screen
           name="RegistriesList"
           component={RegistrationListScreen}

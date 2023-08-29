@@ -16,6 +16,7 @@ const DateInput: FC<DateInputProps> = ({
   option = {
     format: 'DD/MM/YYYY',
   },
+  ...props
 }) => {
   const [open, setOpen] = useState(false);
 
@@ -36,6 +37,7 @@ const DateInput: FC<DateInputProps> = ({
         style={styles.input_style}
         placeholder={placeholder}
         type="datetime"
+        {...props}
       />
       {haveCalendar && (
         <TouchableOpacity

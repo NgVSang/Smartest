@@ -20,6 +20,8 @@ const phone_number = Yup.string()
     /^(\+84|84|0){1}([3|5|7|8|9]){1}([0-9]{8})$/,
     'Số điện thoại không đúng',
   );
+
+const account = Yup.string().required('Vui lòng nhập tài khoản');
 export {
   email,
   password,
@@ -28,4 +30,5 @@ export {
   validNumber,
   name,
   old_password,
+  account,
 };

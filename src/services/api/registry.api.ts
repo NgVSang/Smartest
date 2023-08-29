@@ -6,6 +6,17 @@ const ENDPOINTS = {
   LISTREGISTRIES: '/customer/registries/list-registries',
   GETHISTORYREGISTER: '/customer/registries/list-registries-history',
   REGISTRATIONINFOR: '/customer/registries/info',
+  CUSTOMERCAR: '/customer/cars',
+  CHECKREGISTRY: '/customer/cars/check-registry',
+  CHECKERROR: '/customer/cars/check-error-by-id',
+  GETERROR: '/customer/cars/errors-by-id',
+  GETCATEGORY: '/customer/cars/category',
+  GETCARTYPE: '/customer/cars/types',
+  GETERRORBYCAR: '/customer/cars/errors-by-license-plate',
+  ADDNEWCAR: '/customer/cars',
+  GETCARINFOR: '/customer/cars/info',
+  GETFLIE: '/customer/registries/profile',
+  GETLIMITVEHICLES: '/customer/registries/limit-vehicles',
 };
 
 const getFutureRegistries = () => {
@@ -48,10 +59,15 @@ const deleteRegistration = (registryId: number) => {
   });
 };
 
+const checkRegistry = (carId: number) => {
+  return instance.get(ENDPOINTS.CHECKREGISTRY + '/' + carId);
+};
+
 export const RegistryApi = {
   getFutureRegistries,
   getListRegistries,
   getHistoryRegistries,
   getRegitryDetail,
   deleteRegistration,
+  checkRegistry,
 };

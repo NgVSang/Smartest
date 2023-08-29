@@ -121,7 +121,7 @@ const updateCarById = (carId: number, data: any) => {
 const getListRequired = () => {
   return instance.get(ENDPOINTS.GETFLIE);
 };
-const get_limit_vehicles_by_date = (date: string) => {
+const getLimitVehiclesByDate = (date: string) => {
   return instance.get(ENDPOINTS.GETLIMITVEHICLES, {
     params: {
       date: date,
@@ -142,5 +142,5 @@ export const CarApi = {
   deleteCarById,
   updateCarById,
   getListRequired,
-  get_limit_vehicles_by_date,
+  getLimitVehiclesByDate,
 };

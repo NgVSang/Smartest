@@ -14,7 +14,7 @@ import {Footer, Header} from '../../components';
 import {styles} from './ProfileScreen.styled';
 import {BASE_URL} from '../../config';
 
-const ProfileScreen: FC<ProfileScreenProps> = () => {
+const ProfileScreen: FC<ProfileScreenProps> = ({navigation}) => {
   const {info} = useSelector(authSelector);
   const dispatch = useDispatch();
   const handleLogout = useCallback(() => {
@@ -26,6 +26,14 @@ const ProfileScreen: FC<ProfileScreenProps> = () => {
         text: 'OK',
         onPress: () => {
           dispatch(logout());
+          navigation.reset({
+            index: 0,
+            routes: [
+              {
+                name: 'Auth',
+              },
+            ],
+          });
         },
       },
     ]);

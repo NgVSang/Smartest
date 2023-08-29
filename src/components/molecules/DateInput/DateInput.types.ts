@@ -1,15 +1,12 @@
-import {ViewStyle} from 'react-native';
-import {
-  TextInputMaskOptionProp,
-  TextInputMaskProps,
-} from 'react-native-masked-text';
+import {TextInputProps, ViewStyle} from 'react-native';
+import {TextInputMaskOptionProp} from 'react-native-masked-text';
 
-export interface DateInputProps {
+export interface DateInputProps extends TextInputProps {
   label?: string;
   haveCalendar?: boolean;
   onChangeDate?: (date: string) => void;
   date?: string;
   placeholder?: string;
-  style: ViewStyle;
+  style?: ViewStyle;
   option?: TextInputMaskOptionProp;
 }
