@@ -27,7 +27,8 @@ const NotificationScreen: FC<NotificationScreenProps> = ({}) => {
       setData(res.data.rows);
       setTotal(res.data.recordsTotal);
       setPage(2);
-    } catch (error) {
+    } catch (error: any) {
+      console.log(error.message);
     } finally {
       setIsLoading(false);
     }

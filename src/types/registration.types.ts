@@ -10,6 +10,13 @@ export interface IRegistration {
   completed_at?: string;
 }
 
+export interface IFee {
+  tariff?: number;
+  serviceCost?: number;
+  road_fee?: number;
+  license_fee?: number;
+}
+
 export interface IRegisGroup {
   date: string;
   list_registration: IRegistration[];
@@ -37,11 +44,6 @@ export interface IRegistrationDetail {
   isPay: number;
   paymentAt?: string;
   planDate?: string;
-  fee: {
-    tariff?: number;
-    serviceCost?: number;
-    road_fee?: number;
-    license_fee?: number;
-  };
+  fee: IFee;
   staff?: any;
 }

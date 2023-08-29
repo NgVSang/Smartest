@@ -16,6 +16,7 @@ import {
   HistoryRegistryScreen,
   InfringeDetailScreen,
   InfringeScreen,
+  MapScreen,
   ProfileScreen,
   RegistrationDetailScreen,
   RegistrationListScreen,
@@ -128,6 +129,7 @@ const RootNavigator: FC = () => {
           name="CreateRegistryInfor"
           component={CreateRegistryInforScreen}
         />
+        <Stack.Screen name="Map" component={MapScreen} />
       </Stack.Navigator>
     </NavigationContainer>
   );

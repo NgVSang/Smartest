@@ -10,7 +10,7 @@ import {Login, Register} from '../../components';
 const AuthScreen: FC<AuthScreenProps> = () => {
   const show = React.useRef<SlidingUpPanel>(null);
   const [showContent, setShowContent] = React.useState('');
-  const [toggle, setToggle] = React.useState<boolean>();
+  const [toggle, setToggle] = React.useState<boolean>(false);
   const showLoginForm = () => {
     setShowContent('login');
     setToggle(!toggle);
@@ -31,7 +31,9 @@ const AuthScreen: FC<AuthScreenProps> = () => {
   };
 
   React.useEffect(() => {
-    return () => show.current?.show();
+    return () => {
+      show.current?.show();
+    };
   }, [toggle]);
 
   return (

@@ -6,7 +6,11 @@ import {styles} from './CreateRegistryTimeScreen.styled';
 import {ErrorMessage, Field, FieldProps, Formik} from 'formik';
 import {ICar, IFormData, IRequired} from '../../../types';
 import {CarApi} from '../../../services/api/car.api';
-import {converLicensePlate, convertDate} from '../../../utils/string';
+import {
+  converLicensePlate,
+  convertDate,
+  reConvertLicensePlate,
+} from '../../../utils/string';
 import {colors, fonts} from '../../../constants';
 import {RegistryApi} from '../../../services/api';
 import Toast from 'react-native-toast-message';
@@ -61,47 +65,69 @@ const CreateRegistryTimeScreen: FC<CreateRegistryTimeScreenProps> = ({
     handelGetRequired();
   }, []);
 
-  const handleSubmit = useCallback(async (data: IFormData) => {
-    try {
-      setLoadingSubmit(true);
-      const check = await RegistryApi.checkRegistry(data.car);
-      if (check.data.isValid === true) {
-        const limit = await CarApi.getLimitVehiclesByDate(
-          convertDate(data.date),
-        );
-        if (limit.data.amount_registries >= limit.data.number_vehicles) {
-          Alert.alert(
-            'Cảnh báo!',
-            'Khung giờ này hiện đang có nhiều đăng ký cùng lúc và có thể sẽ cần đợi xử lý lâu hơn',
-            [
-              {
-                text: 'Hủy',
-              },
-              {
-                text: 'Tiếp tục',
-                onPress: () => {
-                  navigation.push('CreateRegistryInfor');
-                },
-              },
-            ],
+  const handleSubmit = useCallback(
+    async (data: IFormData) => {
+      try {
+        setLoadingSubmit(true);
+        const check = await RegistryApi.checkRegistry(data.car);
+        if (check.data.isValid === true && check.status === 1) {
+          const limit = await CarApi.getLimitVehiclesByDate(
+            convertDate(data.date),
           );
+          const licensePlate = reConvertLicensePlate(
+            carOptions.filter(
+              car => car.id.toString() === data.car.toString(),
+            )[0].name,
+          );
+          if (limit.data.amount_registries >= limit.data.number_vehicles) {
+            Alert.alert(
+              'Cảnh báo!',
+              'Khung giờ này hiện đang có nhiều đăng ký cùng lúc và có thể sẽ cần đợi xử lý lâu hơn',
+              [
+                {
+                  text: 'Chọn lại',
+                },
+                {
+                  text: 'Tiếp tục',
+                  onPress: () => {
+                    navigation.push('CreateRegistryInfor', {
+                      car: {
+                        id: data.car,
+                        licensePlate: licensePlate,
+                      },
+                      date: convertDate(data.date),
+                      time: data.time,
+                    });
+                  },
+                },
+              ],
+            );
+          } else {
+            navigation.push('CreateRegistryInfor', {
+              car: {
+                id: data.car,
+                licensePlate: licensePlate,
+              },
+              date: convertDate(data.date),
+              time: data.time,
+            });
+          }
         } else {
-          navigation.push('CreateRegistryInfor');
+          //@ts-ignore
+          throw new Error(check.message);
         }
-      } else {
-        //@ts-ignore
-        throw new Error(check.message);
+      } catch (error: any) {
+        Toast.show({
+          type: 'error',
+          text1: 'Đăng ký không thành công',
+          text2: error.message || 'Vui lòng thử lại ',
+        });
+      } finally {
+        setLoadingSubmit(false);
       }
-    } catch (error: any) {
-      Toast.show({
-        type: 'error',
-        text1: 'Đăng ký không thành công',
-        text2: error.message || 'Vui lòng thử lại ',
-      });
-    } finally {
-      setLoadingSubmit(false);
-    }
-  }, []);
+    },
+    [carOptions],
+  );
 
   return (
     <View style={{flex: 1}}>

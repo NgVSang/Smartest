@@ -1,4 +1,9 @@
-import {IHistoryRegistry, IRegisGroup, IRegistrationDetail} from '../../types';
+import {
+  IFee,
+  IHistoryRegistry,
+  IRegisGroup,
+  IRegistrationDetail,
+} from '../../types';
 import instance from '../api/axios';
 
 const ENDPOINTS = {
@@ -17,6 +22,8 @@ const ENDPOINTS = {
   GETCARINFOR: '/customer/cars/info',
   GETFLIE: '/customer/registries/profile',
   GETLIMITVEHICLES: '/customer/registries/limit-vehicles',
+  COSTCALCULATION: '/customer/registries/cost-calculation',
+  REGISTERREGISTRATION: '/customer/registries',
 };
 
 const getFutureRegistries = () => {
@@ -52,7 +59,7 @@ const getRegitryDetail = (registryId: number) => {
 };
 
 const deleteRegistration = (registryId: number) => {
-  return instance.get(ENDPOINTS.REGISTRATIONINFOR, {
+  return instance.delete(ENDPOINTS.REGISTRATIONINFOR, {
     params: {
       registryId: registryId,
     },
@@ -63,6 +70,18 @@ const checkRegistry = (carId: number) => {
   return instance.get(ENDPOINTS.CHECKREGISTRY + '/' + carId);
 };
 
+const getCostRegistry = (data: {
+  carId: string;
+  distance?: number;
+  address?: string;
+}) => {
+  return instance.post<{fee: IFee}>(ENDPOINTS.COSTCALCULATION, data);
+};
+
+const registerForRegistration = (data: any) => {
+  return instance.post(ENDPOINTS.REGISTERREGISTRATION, data);
+};
+
 export const RegistryApi = {
   getFutureRegistries,
   getListRegistries,
@@ -70,4 +89,6 @@ export const RegistryApi = {
   getRegitryDetail,
   deleteRegistration,
   checkRegistry,
+  getCostRegistry,
+  registerForRegistration,
 };

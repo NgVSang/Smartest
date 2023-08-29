@@ -13,7 +13,14 @@ export type RootStackParamList = {
   CreateRegistryTime: {
     carId?: number;
   };
-  CreateRegistryInfor: undefined;
+  CreateRegistryInfor: {
+    car: {
+      id: string;
+      licensePlate: string;
+    };
+    date: string;
+    time: string;
+  };
   CarList: undefined;
   CarDetail: {
     id: number;
@@ -33,6 +40,7 @@ export type RootStackParamList = {
     search: string;
   };
   Profile: undefined;
+  Map: undefined;
 };
 
 export type BottomNavigate = {
