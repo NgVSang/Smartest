@@ -1,16 +1,57 @@
 import {StyleSheet} from 'react-native';
-import {fonts} from '../../../constants';
+import {colors, fonts} from '../../../constants';
 
 export const styles = StyleSheet.create({
   scroll_view: {
     flex: 1,
     backgroundColor: '#FFFFFF',
   },
+  headerModalWrapper: {
+    paddingVertical: 20,
+    paddingHorizontal: 20,
+    marginBottom: 20,
+    borderBottomColor: colors.DARKER_BLUE,
+    borderBottomWidth: 1,
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+  },
+  textStyled: {
+    color: colors.DARKER_BLUE,
+    textTransform: 'uppercase',
+    fontFamily: fonts.BE_VIETNAM_PRO_BOLD,
+    fontSize: 14,
+  },
+  drop_down: {
+    position: 'absolute',
+    zIndex: 1,
+    top: 50,
+    width: '100%',
+    borderBottomWidth: 1,
+    borderBlockColor: colors.BLUE,
+    height: 200,
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 5,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 5.84,
+    elevation: 10,
+    backgroundColor: colors.WHITE,
+  },
+  drop_text: {
+    color: '#2C3442',
+    padding: 15,
+    borderBottomColor: '#E1E9F6',
+    borderBottomWidth: 1,
+  },
   text_input: {
     marginTop: 20,
   },
   input_group: {
     width: '100%',
+    zIndex: 1,
     paddingHorizontal: 15,
     borderBottomColor: '#E1E9F6',
     borderBottomWidth: 5,

@@ -11,3 +11,11 @@ export {
   closeModal,
   openModal,
 } from './modal.reducer';
+
+export {
+  default as geoSlice,
+  geoSelector,
+  setCurrentPosition,
+  setHistoryPosition,
+  clearPosition,
+} from './geo.reducer';

@@ -1,7 +1,7 @@
 import {ViewProps, ViewStyle} from 'react-native';
 
 export interface DropDownItem {
-  id: number;
+  id: number | string;
   name: string | number;
 }
 

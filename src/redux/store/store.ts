@@ -1,11 +1,12 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {configureStore, combineReducers} from '@reduxjs/toolkit';
 import {persistStore, persistReducer} from 'redux-persist';
-import {authSlice, modalSlice} from '../reducers';
+import {authSlice, geoSlice, modalSlice} from '../reducers';
 
 const rootReducer = combineReducers({
   auth: authSlice,
   modal: modalSlice,
+  geo: geoSlice,
 });
 
 const persistConfig = {
