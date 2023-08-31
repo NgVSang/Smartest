@@ -1,47 +1,51 @@
 import {
   Image,
   Modal,
-  RefreshControl,
   ScrollView,
+  StyleSheet,
   Text,
   TextInput,
   TouchableOpacity,
   View,
 } from 'react-native';
-import React, {FC, useCallback, useEffect, useState} from 'react';
-import {CreateRegistryInforScreenProps} from './CreateRegistryInforScreen.types';
-import {FeeContent, Footer, Header, SelecteInput} from '../../../components';
-import {styles} from './CreateRegistryInforScreen.styled';
+import React, {FC, useCallback, useEffect, useMemo, useState} from 'react';
+import {UpdateRegistryScreenProps} from './UpdateRegistryScreen.types';
+import {DateInput, FeeContent, Footer, Header} from '../../../components';
+import {styles} from './UpdateRegistryScreen.styled';
 import {useFormik} from 'formik';
 import {IFee, IFormData} from '../../../types';
-import {convertDate, convertPrice} from '../../../utils/string';
-import {RegistryApi} from '../../../services/api';
-import Toast from 'react-native-toast-message';
+import {
+  converLicensePlate,
+  convertDate,
+  convertPrice,
+  formatDate,
+} from '../../../utils/string';
+import {colors} from '../../../constants';
+import {UpdateRegistrySchema} from '../../../services/validators';
 import {useDispatch, useSelector} from 'react-redux';
 import {clearPosition, geoSelector, setCurrentPosition} from '../../../redux';
-import {colors} from '../../../constants';
-import {RegistryInfoSchema} from '../../../services/validators';
+import {RegistryApi} from '../../../services/api';
+import Toast from 'react-native-toast-message';
 
-const CreateRegistryInforScreen: FC<CreateRegistryInforScreenProps> = ({
+const UpdateRegistryScreen: FC<UpdateRegistryScreenProps> = ({
   navigation,
   route,
 }) => {
-  const {car, date, time} = route.params;
+  const {data} = route.params;
   const dispatch = useDispatch();
   const {history, position} = useSelector(geoSelector);
 
   const [isLoading, setIsLoading] = React.useState(false);
   const [loadingSubmit, setLoadingSubmit] = React.useState(false);
-  const [feeList, setFeeList] = useState<IFee>();
   const [open, setOpen] = useState(false);
+  const [feeList, setFeeList] = useState<IFee>(data.fee);
 
   const handleGetCost = useCallback(
     async (address?: string, distance?: number) => {
       try {
         setIsLoading(true);
-        setFeeList(undefined);
         const res = await RegistryApi.getCostRegistry({
-          carId: car.id,
+          carId: data.carId.toString(),
           address: address,
           distance: distance,
         });
@@ -62,77 +66,100 @@ const CreateRegistryInforScreen: FC<CreateRegistryInforScreenProps> = ({
         setIsLoading(false);
       }
     },
-    [car],
+    [data.carId],
   );
 
-  useEffect(() => {
-    handleGetCost();
-    dispatch(clearPosition());
-  }, []);
+  const handleSubmit = useCallback(async (formData: IFormData) => {
+    if (feeList) {
+      try {
+        setLoadingSubmit(true);
+        let dataSend: any = {
+          carId: data.carId,
+          date: convertDate(formData.date),
+          registry_time: formData.time,
+          license_fee: feeList.license_fee,
+          road_fee: feeList.road_fee,
+          tariff: feeList.tariff,
+        };
+        console.log(data);
 
-  const handleSubmit = useCallback(
-    async (data: IFormData) => {
-      if (feeList) {
-        try {
-          setLoadingSubmit(true);
-          let dataSend: any = {
-            carId: car.id,
-            date: convertDate(date),
-            registry_time: time,
-            license_fee: feeList.license_fee,
-            road_fee: feeList.road_fee,
-            tariff: feeList.tariff,
+        if (formData.check)
+          dataSend = {
+            ...dataSend,
+            address: formData.address,
+            serviceCost: feeList.serviceCost,
           };
-          if (data.check)
-            dataSend = {
-              ...dataSend,
-              address: data.address,
-              serviceCost: feeList.serviceCost,
-            };
-          const res = await RegistryApi.registerForRegistration(dataSend);
-          if (res.status === 1) {
-            dispatch(clearPosition());
-            Toast.show({
-              type: 'success',
-              text1: 'Đăng ký thành công!',
-            });
-            navigation.reset({
-              index: 1,
-              routes: [
-                {
-                  name: 'Bottom',
-                },
-                {
-                  name: 'RegistriesList',
-                },
-              ],
-            });
-          } else {
-            //@ts-ignore
-            throw new Error(res.message);
-          }
-        } catch (error: any) {
+        const res = await RegistryApi.updateRegistration(dataSend, data.id);
+
+        if (res.status === 1) {
+          dispatch(clearPosition());
           Toast.show({
-            type: 'error',
-            text1: 'Đăng ký không thành công!',
-            text2: error.message || 'Vui lòng thử lại.',
+            type: 'success',
+            text1: 'Chỉnh sửa thành công!',
           });
-        } finally {
-          setLoadingSubmit(false);
+          navigation.reset({
+            index: 1,
+            routes: [
+              {
+                name: 'Bottom',
+              },
+              {
+                name: 'RegistriesList',
+              },
+            ],
+          });
+        } else {
+          //@ts-ignore
+          throw new Error(res.message);
         }
+      } catch (error: any) {
+        Toast.show({
+          type: 'error',
+          text1: 'Chỉnh sửa không thành công!',
+          text2: error.message || 'Vui lòng thử lại.',
+        });
+      } finally {
+        setLoadingSubmit(false);
       }
-    },
-    [car, date, time, feeList],
-  );
+    }
+  }, []);
 
   const formik = useFormik({
     initialValues: {
-      check: false,
-      address: '',
+      address: data.address,
+      check: data.address ? true : false,
+      date: formatDate(data.date),
+      time: data.registry_time?.slice(0, 5) || '',
     },
+    validationSchema: UpdateRegistrySchema,
     onSubmit: handleSubmit,
-    validationSchema: RegistryInfoSchema,
   });
+  useEffect(() => {
+    dispatch(clearPosition());
+  }, []);
+
+  const renderFeeDistance = useMemo(() => {
+    if (formik.values.check) {
+      if (position) {
+        return (
+          <FeeContent
+            title="Phí đăng kiểm hộ"
+            price={
+              convertPrice(feeList?.serviceCost) +
+              ' đ' +
+              (position.distance ? '/' + position.distance.text : '')
+            }
+          />
+        );
+      }
+      return (
+        <FeeContent
+          title="Phí đăng kiểm hộ"
+          price={`${convertPrice(feeList?.serviceCost)} đ`}
+        />
+      );
+    }
+  }, [formik.values.check, position, feeList.serviceCost]);
 
   useEffect(() => {
     if (position && position.description) {
@@ -140,21 +167,54 @@ const CreateRegistryInforScreen: FC<CreateRegistryInforScreenProps> = ({
       if (position.distance) {
         handleGetCost(position.description, position.distance.value / 1000);
       }
-    } else {
-      formik.setFieldValue('address', '');
-      handleGetCost();
     }
   }, [position]);
 
   return (
     <View style={{flex: 1}}>
-      <Header title="Đăng ký đăng kiểm" />
-      <ScrollView
-        style={styles.scroll_view}
-        refreshControl={
-          <RefreshControl refreshing={isLoading} onRefresh={handleGetCost} />
-        }>
-        <View style={styles.input_group}>
+      <Header title="Chỉnh sửa đăng ký đăng kiểm" />
+      <ScrollView style={styles.scroll_view}>
+        <View style={styles.session_top}>
+          <View style={styles.group}>
+            <Text style={styles.group_title}>Xe đăng ký</Text>
+            <Text style={styles.group_content}>
+              {converLicensePlate(data.license_plates)}
+            </Text>
+          </View>
+          <View style={styles.dateItemWrapper}>
+            <View style={styles.input_picker}>
+              <DateInput
+                date={formik.values.date}
+                label="Ngày đăng ký"
+                onChangeDate={date => {
+                  formik.setFieldValue('date', date);
+                }}
+                onBlur={formik.handleBlur('date')}
+              />
+              <View style={styles.error_message}>
+                <Text style={{color: colors.RED}}>{formik.errors.date}</Text>
+              </View>
+            </View>
+            <View style={styles.input_picker}>
+              <DateInput
+                date={formik.values.time}
+                label="Giờ đăng ký"
+                onChangeDate={time => {
+                  formik.setFieldValue('time', time);
+                }}
+                placeholder="hh:mm"
+                option={{
+                  format: 'hh:mm',
+                }}
+                onBlur={formik.handleBlur('time')}
+              />
+              <View style={styles.error_message}>
+                <Text style={{color: colors.RED}}>{formik.errors.time}</Text>
+              </View>
+            </View>
+          </View>
+        </View>
+        <View style={styles.session_bottom}>
           <TouchableOpacity
             style={styles.check}
             onPress={() => {
@@ -186,9 +246,6 @@ const CreateRegistryInforScreen: FC<CreateRegistryInforScreenProps> = ({
                 <Text style={styles.label_style}>Địa chỉ nhận xe</Text>
                 <TextInput
                   value={formik.values.address}
-                  // onChangeText={text => {
-                  //   formik.setFieldValue('address', text);
-                  // }}
                   style={styles.input_style}
                   placeholder="Nhập"
                   placeholderTextColor={'#757F8E'}
@@ -259,16 +316,7 @@ const CreateRegistryInforScreen: FC<CreateRegistryInforScreenProps> = ({
             title="Phí kiểm định xe cơ giới"
             price={convertPrice(feeList?.tariff) + ' đ'}
           />
-          {formik.values.check && position && (
-            <FeeContent
-              title="Phí đăng kiểm hộ"
-              price={
-                convertPrice(feeList?.serviceCost) +
-                ' đ' +
-                (position.distance ? '/' + position.distance.text : '')
-              }
-            />
-          )}
+          {renderFeeDistance}
           <FeeContent
             title="Phí cấp giấy chứng nhận kiểm định"
             price={`${convertPrice(feeList?.license_fee)} đ`}
@@ -290,15 +338,16 @@ const CreateRegistryInforScreen: FC<CreateRegistryInforScreenProps> = ({
         </View>
       </ScrollView>
       <Footer
-        buttonOkContent="GỬI"
+        buttonOkContent="LƯU"
         onClickButtonOk={formik.handleSubmit}
-        buttonCancelContent="HỦY"
-        style={styles.footer_style}
+        style={{
+          backgroundColor: '#FFFFFF',
+        }}
         loading={loadingSubmit}
-        disabled={loadingSubmit || isLoading}
+        disabled={loadingSubmit}
       />
     </View>
   );
 };
 
-export default CreateRegistryInforScreen;
+export default UpdateRegistryScreen;

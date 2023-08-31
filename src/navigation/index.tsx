@@ -21,6 +21,7 @@ import {
   RegistrationDetailScreen,
   RegistrationListScreen,
   UpdateCarScreen,
+  UpdateRegistryScreen,
 } from '../screens';
 import BottomNavigattion from './BottomNavigattion';
 import {useSelector} from 'react-redux';
@@ -129,6 +130,7 @@ const RootNavigator: FC = () => {
           name="CreateRegistryInfor"
           component={CreateRegistryInforScreen}
         />
+        <Stack.Screen name="UpdateRegistry" component={UpdateRegistryScreen} />
         <Stack.Screen name="Map" component={MapScreen} />
       </Stack.Navigator>
     </NavigationContainer>

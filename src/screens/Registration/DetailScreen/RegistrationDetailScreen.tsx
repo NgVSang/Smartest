@@ -233,11 +233,16 @@ const RegistrationDetailScreen: FC<RegistrationDetailScreenProps> = ({
       {data && data.isPay === 0 && (
         <Footer
           buttonOkContent="CẬP NHẬT"
-          onClickButtonOk={() => {}}
+          onClickButtonOk={() => {
+            navigation.push('UpdateRegistry', {
+              data: data,
+            });
+          }}
           buttonCancelContent="XÓA"
           style={{
             backgroundColor: '#FFFFFF',
           }}
+          disabled={loadingSubmit}
           onClickButtonCancel={handleDelete}
         />
       )}

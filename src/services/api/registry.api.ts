@@ -82,6 +82,14 @@ const registerForRegistration = (data: any) => {
   return instance.post(ENDPOINTS.REGISTERREGISTRATION, data);
 };
 
+const updateRegistration = (data: any, registryId: number) => {
+  return instance.put(ENDPOINTS.REGISTRATIONINFOR, data, {
+    params: {
+      registryId: registryId,
+    },
+  });
+};
+
 export const RegistryApi = {
   getFutureRegistries,
   getListRegistries,
@@ -91,4 +99,5 @@ export const RegistryApi = {
   checkRegistry,
   getCostRegistry,
   registerForRegistration,
+  updateRegistration,
 };
