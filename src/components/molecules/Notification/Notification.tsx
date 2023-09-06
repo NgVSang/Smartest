@@ -3,6 +3,8 @@ import React, {FC, useCallback, useMemo} from 'react';
 import {NotificationProps} from './Notification.types';
 import {styles} from './Notification.styled';
 import {colors} from '../../../constants';
+import {NavigationService} from '../../../services/navigation';
+import dayjs from 'dayjs';
 
 const Notification: FC<NotificationProps> = ({data}) => {
   const renderIcon = useMemo(() => {
@@ -41,7 +43,11 @@ const Notification: FC<NotificationProps> = ({data}) => {
     }
   }, [data.type]);
 
-  const handlePress = useCallback(() => {}, [data.id]);
+  const handlePress = useCallback(() => {
+    NavigationService.push<'NotificationDetail'>('NotificationDetail', {
+      id: data.id,
+    });
+  }, [data.id]);
 
   return (
     <TouchableOpacity
@@ -61,7 +67,9 @@ const Notification: FC<NotificationProps> = ({data}) => {
           }>
           {data.content}
         </Text>
-        <Text style={styles.time}>{data.time}</Text>
+        <Text style={styles.time}>
+          {dayjs(data.time).format('DD/MM/YYYY hh:mm:ss')}
+        </Text>
       </View>
     </TouchableOpacity>
   );

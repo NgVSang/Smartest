@@ -3,6 +3,7 @@ export {
   authSelector,
   setCredential,
   logout,
+  updateCredential,
 } from './auth.reducer';
 
 export {

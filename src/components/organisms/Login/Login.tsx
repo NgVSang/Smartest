@@ -65,7 +65,7 @@ const Login: FC<LoginProps> = ({}) => {
   }, []);
 
   return (
-    <ScrollView style={styles.screen}>
+    <ScrollView style={styles.screen} showsVerticalScrollIndicator={false}>
       <View style={styles.container}>
         <View style={styles.title}>
           <Text style={styles.title_style}>Đăng nhập</Text>

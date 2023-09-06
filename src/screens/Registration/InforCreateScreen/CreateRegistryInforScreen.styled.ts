@@ -105,9 +105,9 @@ export const styles = StyleSheet.create({
   },
   icon_position: {
     position: 'absolute',
-    bottom: 5,
+    bottom: 0,
     right: -10,
-    padding: 10,
+    padding: 15,
   },
   icon_style: {
     width: 14,

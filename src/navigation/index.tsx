@@ -17,10 +17,12 @@ import {
   InfringeDetailScreen,
   InfringeScreen,
   MapScreen,
+  NotificationDetailScreen,
   ProfileScreen,
   RegistrationDetailScreen,
   RegistrationListScreen,
   UpdateCarScreen,
+  UpdateProfileScreen,
   UpdateRegistryScreen,
 } from '../screens';
 import BottomNavigattion from './BottomNavigattion';
@@ -130,8 +132,13 @@ const RootNavigator: FC = () => {
           name="CreateRegistryInfor"
           component={CreateRegistryInforScreen}
         />
+        <Stack.Screen name="UpdateProfile" component={UpdateProfileScreen} />
         <Stack.Screen name="UpdateRegistry" component={UpdateRegistryScreen} />
         <Stack.Screen name="Map" component={MapScreen} />
+        <Stack.Screen
+          name="NotificationDetail"
+          component={NotificationDetailScreen}
+        />
       </Stack.Navigator>
     </NavigationContainer>
   );

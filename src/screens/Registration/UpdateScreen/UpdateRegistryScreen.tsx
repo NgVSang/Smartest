@@ -1,4 +1,5 @@
 import {
+  Alert,
   Image,
   Modal,
   ScrollView,
@@ -70,7 +71,9 @@ const UpdateRegistryScreen: FC<UpdateRegistryScreenProps> = ({
   );
 
   const handleSubmit = useCallback(async (formData: IFormData) => {
-    if (feeList) {
+    if (formData.check === true && formData.address === '') {
+      Alert.alert('Thông báo', 'Vui lòng chọn địa chỉ!');
+    } else if (feeList) {
       try {
         setLoadingSubmit(true);
         let dataSend: any = {
@@ -126,7 +129,7 @@ const UpdateRegistryScreen: FC<UpdateRegistryScreenProps> = ({
 
   const formik = useFormik({
     initialValues: {
-      address: data.address,
+      address: data.address || '',
       check: data.address ? true : false,
       date: formatDate(data.date),
       time: data.registry_time?.slice(0, 5) || '',

@@ -72,8 +72,8 @@ const AuthScreen: FC<AuthScreenProps> = () => {
       </View>
       <SlidingUpPanel
         ref={show}
-        draggableRange={{top: SCREEN_HEIGHT * 0.65, bottom: 0}}
-        height={SCREEN_HEIGHT * 0.65}
+        draggableRange={{top: SCREEN_HEIGHT * 0.55, bottom: 0}}
+        height={SCREEN_HEIGHT * 0.55}
         allowMomentum={true}
         allowDragging={false}
         avoidKeyboard={true}

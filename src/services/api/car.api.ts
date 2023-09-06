@@ -38,7 +38,7 @@ const getCarCategory = () => {
   return instance.get(ENDPOINTS.GETCATEGORY);
 };
 
-const getCarType = (categoryId: number) => {
+const getCarType = (categoryId: number | string) => {
   return instance.get(ENDPOINTS.GETCARTYPE, {
     params: {
       categoryId,

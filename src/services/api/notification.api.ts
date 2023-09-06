@@ -18,6 +18,15 @@ const getListNotification = (limit?: number, page?: number) => {
   );
 };
 
+const getNotificationsById = (id: number) => {
+  return instance.get(ENDPOINTS.NOTIFICATIONDETAIL, {
+    params: {
+      id: id,
+    },
+  });
+};
+
 export const NotificationApi = {
   getListNotification,
+  getNotificationsById,
 };

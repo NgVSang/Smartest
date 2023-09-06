@@ -40,7 +40,7 @@ const time = Yup.string()
 
 const account = Yup.string().required('Vui lòng nhập tài khoản');
 
-const address = Yup.string().required('Vui lòng chọn địa chỉ');
+const address = Yup.string();
 export {
   email,
   password,

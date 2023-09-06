@@ -22,6 +22,7 @@ const AuthInput: FC<AuthInputProps> = ({
             value={field.value}
             onChangeText={field.onChange(field.name)}
             onBlur={form.handleBlur(field.name)}
+            placeholderTextColor={colors.LIGHT_BLUE_GRAY}
             style={[styles.inputType, styles.inputContainer]}
             {...props}
             secureTextEntry={passwordVisible}
@@ -61,6 +62,7 @@ const AuthInput: FC<AuthInputProps> = ({
           value={field.value}
           onChangeText={field.onChange(field.name)}
           onBlur={form.handleBlur(field.name)}
+          placeholderTextColor={colors.LIGHT_BLUE_GRAY}
           style={[styles.inputType, styles.inputContainer]}
           keyboardType={keyboardType}
           {...props}

@@ -72,7 +72,7 @@ const CreateCarScreen: FC<CreateCarScreenProps> = ({navigation}) => {
     } catch (error: any) {}
   }, []);
 
-  const handleGetCarTypes = useCallback(async (id: number) => {
+  const handleGetCarTypes = useCallback(async (id: number | string) => {
     try {
       const res = await CarApi.getCarType(id);
       if (res.status === 1) {

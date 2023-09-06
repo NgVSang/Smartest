@@ -29,8 +29,29 @@ const adminLogin = (data: any) => {
   return instance.post<LoginResponse>(ENDPOINTS.LOGIN_ADMIN, data);
 };
 
+const updateProfile = (data: any) => {
+  const formData = new FormData();
+  if (data.photos) {
+    formData.append('photos', {
+      uri: data.photos.uri,
+      type: 'image/jpeg',
+      name: data.photos.fileName,
+    });
+  }
+  formData.append('name', data.name);
+  formData.append('email', data.email);
+  formData.append('removed', data.removed);
+  return instance.patch(ENDPOINTS.UPDATE_PROFILE, formData, {
+    headers: {
+      accept: 'application/json',
+      'Content-Type': `multipart/form-data`,
+    },
+  });
+};
+
 export const AuthApi = {
   login,
   get_hotline,
   adminLogin,
+  updateProfile,
 };

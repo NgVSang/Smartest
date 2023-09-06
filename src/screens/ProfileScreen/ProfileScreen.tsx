@@ -124,7 +124,9 @@ const ProfileScreen: FC<ProfileScreenProps> = ({navigation}) => {
       </ScrollView>
       <Footer
         buttonOkContent={'Cập nhật thông tin'}
-        onClickButtonOk={() => {}}
+        onClickButtonOk={() => {
+          navigation.push('UpdateProfile');
+        }}
         style={styles.footer_style}
       />
     </View>

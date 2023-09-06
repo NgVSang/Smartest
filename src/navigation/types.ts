@@ -43,7 +43,11 @@ export type RootStackParamList = {
     search: string;
   };
   Profile: undefined;
+  UpdateProfile: undefined;
   Map: undefined;
+  NotificationDetail: {
+    id: number;
+  };
 };
 
 export type BottomNavigate = {

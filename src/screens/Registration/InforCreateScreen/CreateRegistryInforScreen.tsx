@@ -1,4 +1,5 @@
 import {
+  Alert,
   Image,
   Modal,
   RefreshControl,
@@ -72,7 +73,9 @@ const CreateRegistryInforScreen: FC<CreateRegistryInforScreenProps> = ({
 
   const handleSubmit = useCallback(
     async (data: IFormData) => {
-      if (feeList) {
+      if (data.check === true && data.address === '') {
+        Alert.alert('Thông báo', 'Vui lòng chọn địa chỉ!');
+      } else if (feeList) {
         try {
           setLoadingSubmit(true);
           let dataSend: any = {
@@ -190,7 +193,7 @@ const CreateRegistryInforScreen: FC<CreateRegistryInforScreenProps> = ({
                   //   formik.setFieldValue('address', text);
                   // }}
                   style={styles.input_style}
-                  placeholder="Nhập"
+                  placeholder="Chọn"
                   placeholderTextColor={'#757F8E'}
                   onPressIn={() => {
                     setOpen(true);
