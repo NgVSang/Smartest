@@ -7,17 +7,18 @@ import {toastConfig} from './utils/toast';
 import RootNavigator from './navigation';
 import {View} from 'react-native';
 import {PopUpModal} from './components';
+import NotificationProvider from './services/notification/NotificationProvider';
 
 function App(): JSX.Element {
   return (
     <Provider store={store}>
       <PersistGate loading={null} persistor={persistor}>
         <SafeAreaProvider>
-          <View style={{flex: 1}}>
+          <NotificationProvider>
             <RootNavigator />
             <Toast position="top" config={toastConfig} />
             <PopUpModal />
-          </View>
+          </NotificationProvider>
         </SafeAreaProvider>
       </PersistGate>
     </Provider>

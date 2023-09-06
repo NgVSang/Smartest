@@ -30,7 +30,6 @@ const NotificationDetailScreen: FC<NotificationDetailScreenProps> = ({
       const res = await NotificationApi.getNotificationsById(id);
       if (res.status === 1) {
         setData(res.data);
-        console.log(res.data);
       } else {
         //@ts-ignore
         throw new Error(res.message);

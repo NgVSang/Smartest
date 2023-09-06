@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "1089382775186",
+    "project_id": "smartest-372801",
+    "storage_bucket": "smartest-372801.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1089382775186:android:d4ca29e1fa6e3f584ae94b",
+        "android_client_info": {
+          "package_name": "com.smartest"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1089382775186-1fjppck9ih02r0hrohqrkmgq1jou3fej.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.smartest",
+            "certificate_hash": "5e8f16062ea3cd2c4a0d547876baa6f38cabf625"
+          }
+        },
+        {
+          "client_id": "1089382775186-rjraq8oi0qiead7jqh1nb3fearmqip80.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD6HrOMPP9vlRB3qr3MDIcVoCpLPl_zjkQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1089382775186-rjraq8oi0qiead7jqh1nb3fearmqip80.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
