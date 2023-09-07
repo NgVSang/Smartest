@@ -13,3 +13,4 @@ export * from './HomeAdminScreen';
 export * from './MapScreen';
 export * from './UpdateProfileScreen';
 export * from './NotificationDetailScreen';
+export * from './MonitoringScheduleScreen';

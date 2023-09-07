@@ -17,6 +17,7 @@ import {
   InfringeDetailScreen,
   InfringeScreen,
   MapScreen,
+  MonitoringScheduleScreen,
   NotificationDetailScreen,
   ProfileScreen,
   RegistrationDetailScreen,
@@ -138,6 +139,10 @@ const RootNavigator: FC = () => {
         <Stack.Screen
           name="NotificationDetail"
           component={NotificationDetailScreen}
+        />
+        <Stack.Screen
+          name="MonitoringSchedule"
+          component={MonitoringScheduleScreen}
         />
       </Stack.Navigator>
     </NavigationContainer>

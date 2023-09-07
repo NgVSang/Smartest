@@ -68,7 +68,7 @@ const RegistrationListScreen: FC<RegistrationListScreenProps> = ({
       <Footer
         buttonOkContent={'Tạo đăng kí mới'}
         onClickButtonOk={() => {
-          navigation.push('CreateRegistryTime');
+          navigation.push('CreateRegistryTime', {});
         }}
       />
     </View>

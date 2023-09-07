@@ -26,6 +26,27 @@ const date = Yup.string()
     /^(0[1-9]|[12][0-9]|3[01])\/(0[1-9]|1[0-2])\/\d{4}$/,
     'Định dạng ngày không hợp lệ. Vui lòng nhập theo định dạng DD/MM/YYYY.',
   )
+  .test('is-valid-date', 'Ngày không hợp lệ', function (value) {
+    if (!value) return true;
+    const parts = value.split('/');
+    const day = parseInt(parts[0], 10);
+    const month = parseInt(parts[1], 10);
+    const year = parseInt(parts[2], 10);
+    if (month < 1 || month > 12 || day < 1 || day > 31) {
+      return false;
+    }
+    if (month === 2) {
+      if ((year % 4 === 0 && year % 100 !== 0) || year % 400 === 0) {
+        return day <= 29;
+      } else {
+        return day <= 28;
+      }
+    }
+    if ([4, 6, 9, 11].includes(month)) {
+      return day <= 30;
+    }
+    return true;
+  })
   .test('is-future-date', 'Ngày không được trong quá khứ', function (value) {
     if (!value) return true;
     const inputDate = new Date(convertDate(value));

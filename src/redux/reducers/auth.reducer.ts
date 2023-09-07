@@ -1,11 +1,13 @@
 import {createSlice, PayloadAction} from '@reduxjs/toolkit';
 import {IUser, LoginResponse} from '../../types';
 import {RootState} from '../store';
+import {String} from 'lodash';
 
 export type AuthState = {
   access_token?: string;
   loggedin: boolean;
   info?: IUser;
+  fcmToken?: string;
 };
 
 const initialState: AuthState = {
@@ -41,6 +43,9 @@ const authSlice = createSlice({
         }
       }
     },
+    setFcmToken: (state, action: PayloadAction<string>) => {
+      state.fcmToken = action.payload;
+    },
     logout: (state, action: PayloadAction) => {
       state.loggedin = false;
       state.access_token = undefined;
@@ -51,5 +56,6 @@ const authSlice = createSlice({
 
 export const authSelector = (state: RootState) => state.auth;
 
-export const {setCredential, logout, updateCredential} = authSlice.actions;
+export const {setCredential, logout, updateCredential, setFcmToken} =
+  authSlice.actions;
 export default authSlice.reducer;

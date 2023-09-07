@@ -48,6 +48,9 @@ export type RootStackParamList = {
   NotificationDetail: {
     id: number;
   };
+  MonitoringSchedule: {
+    date: string;
+  };
 };
 
 export type BottomNavigate = {

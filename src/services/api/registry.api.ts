@@ -24,6 +24,7 @@ const ENDPOINTS = {
   GETLIMITVEHICLES: '/customer/registries/limit-vehicles',
   COSTCALCULATION: '/customer/registries/cost-calculation',
   REGISTERREGISTRATION: '/customer/registries',
+  LISTREGISTERBYID: '/customer/registries/list-registries-date',
 };
 
 const getFutureRegistries = () => {
@@ -90,6 +91,14 @@ const updateRegistration = (data: any, registryId: number) => {
   });
 };
 
+const getRegistriesByDate = (date: string) => {
+  return instance.get(ENDPOINTS.LISTREGISTERBYID, {
+    params: {
+      date: date,
+    },
+  });
+};
+
 export const RegistryApi = {
   getFutureRegistries,
   getListRegistries,
@@ -100,4 +109,5 @@ export const RegistryApi = {
   getCostRegistry,
   registerForRegistration,
   updateRegistration,
+  getRegistriesByDate,
 };

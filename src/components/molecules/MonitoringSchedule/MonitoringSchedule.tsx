@@ -6,6 +6,7 @@ import {styles} from './MonitoringSchedule.styled';
 import {colors} from '../../../constants';
 import {RegistryApi} from '../../../services/api';
 import {MarkedDates} from 'react-native-calendars/src/types';
+import {NavigationService} from '../../../services/navigation';
 
 LocaleConfig.locales['vn'] = {
   monthNames: [
@@ -77,7 +78,9 @@ const MonitoringSchedule: FC<MonitoringScheduleProps> = ({containerStyle}) => {
       <Calendar
         scrollEnabled={true}
         onDayPress={day => {
-          // NavigationService.navigate('TrackCalender', {day});
+          NavigationService.push<'MonitoringSchedule'>('MonitoringSchedule', {
+            date: day.dateString,
+          });
         }}
         enableSwipeMonths={true}
         firstDay={1}

@@ -9,11 +9,12 @@ import {IFormData} from '../../../types';
 import {Button} from '../../atoms';
 import {AuthApi, setHeaderConfigAxios} from '../../../services/api';
 import Toast from 'react-native-toast-message';
-import {useDispatch} from 'react-redux';
-import {setCredential} from '../../../redux';
+import {useDispatch, useSelector} from 'react-redux';
+import {authSelector, setCredential} from '../../../redux';
 import {NavigationService} from '../../../services/navigation';
 
 const Login: FC<LoginProps> = ({}) => {
+  const {fcmToken} = useSelector(authSelector);
   const dispatch = useDispatch();
   const [isLoading, setIsLoading] = useState(false);
 
@@ -23,6 +24,7 @@ const Login: FC<LoginProps> = ({}) => {
       const dataSend = {
         phone_number: data.account,
         password: data.password,
+        // deviceToken: fcmToken,
       };
       const res = await AuthApi.login(dataSend);
       dispatch(setCredential(res.data));
@@ -36,29 +38,34 @@ const Login: FC<LoginProps> = ({}) => {
         ],
       });
     } catch (error: any) {
-      try {
-        const dataSend = {
-          username: data.account,
-          password: data.password,
-        };
-        const res = await AuthApi.adminLogin(dataSend);
-        dispatch(setCredential(res.data));
-        setHeaderConfigAxios(res.data.access_token);
-        NavigationService.reset({
-          index: 0,
-          routes: [
-            {
-              name: 'AdminBottom',
-            },
-          ],
-        });
-      } catch (error: any) {
-        Toast.show({
-          type: 'error',
-          text1: error.message || 'Tài khoản hoặc mật khẩu không đúng!',
-          text2: 'Vui lòng thử lại.',
-        });
-      }
+      Toast.show({
+        type: 'error',
+        text1: error.message || 'Tài khoản hoặc mật khẩu không đúng!',
+        text2: 'Vui lòng thử lại.',
+      });
+      // try {
+      //   const dataSend = {
+      //     username: data.account,
+      //     password: data.password,
+      //   };
+      //   const res = await AuthApi.adminLogin(dataSend);
+      //   dispatch(setCredential(res.data));
+      //   setHeaderConfigAxios(res.data.access_token);
+      //   NavigationService.reset({
+      //     index: 0,
+      //     routes: [
+      //       {
+      //         name: 'AdminBottom',
+      //       },
+      //     ],
+      //   });
+      // } catch (error: any) {
+      //   Toast.show({
+      //     type: 'error',
+      //     text1: error.message || 'Tài khoản hoặc mật khẩu không đúng!',
+      //     text2: 'Vui lòng thử lại.',
+      //   });
+      // }
     } finally {
       setIsLoading(false);
     }
