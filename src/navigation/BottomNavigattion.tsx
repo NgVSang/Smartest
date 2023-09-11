@@ -5,10 +5,15 @@ import {BottomNavigate} from './types';
 import {HomeScreen, HotlineScreen, NotificationScreen} from '../screens';
 import {colors, fonts} from '../constants';
 import {TabBottomItem} from '../components';
+import {useDispatch, useSelector} from 'react-redux';
+import {authSelector, setStatusNotification} from '../redux';
 
 const Tab = createBottomTabNavigator<BottomNavigate>();
 
 const BottomNavigattion: FC = () => {
+  const {haveNotices} = useSelector(authSelector);
+  const dispatch = useDispatch();
+
   return (
     <Tab.Navigator>
       <Tab.Screen
@@ -57,6 +62,12 @@ const BottomNavigattion: FC = () => {
             />
           ),
           headerShown: false,
+          tabBarBadge: haveNotices ? '' : undefined,
+        }}
+        listeners={{
+          tabPress: () => {
+            dispatch(setStatusNotification(false));
+          },
         }}
       />
       <Tab.Screen

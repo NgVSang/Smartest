@@ -5,6 +5,7 @@ export {
   logout,
   updateCredential,
   setFcmToken,
+  setStatusNotification,
 } from './auth.reducer';
 
 export {

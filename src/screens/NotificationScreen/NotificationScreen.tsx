@@ -11,13 +11,27 @@ import {NotificationApi} from '../../services/api';
 import {INotice} from '../../types';
 import {Header, Loading, Notification} from '../../components';
 import {styles} from './NotificationScreen.styled';
+import {useDispatch} from 'react-redux';
+import {setStatusNotification} from '../../redux';
 
 const NotificationScreen: FC<NotificationScreenProps> = ({}) => {
+  const dispatch = useDispatch();
   const [isLoading, setIsLoading] = useState(false);
   const [isLoadMore, setIsLoadMore] = React.useState(false);
   const [page, setPage] = React.useState<number>(1);
   const [total, setTotal] = React.useState<number>(10);
   const [data, setData] = React.useState<INotice[]>([]);
+
+  const handleGetStatusNotification = useCallback(async () => {
+    try {
+      const res = await NotificationApi.updateNotificationStatus();
+      if (res.status === 1) {
+        dispatch(setStatusNotification(false));
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  }, []);
 
   const handleGetNotifications = async () => {
     try {
@@ -58,6 +72,7 @@ const NotificationScreen: FC<NotificationScreenProps> = ({}) => {
 
   useEffect(() => {
     handleGetNotifications();
+    handleGetStatusNotification();
   }, []);
 
   const isCloseToBottom = ({

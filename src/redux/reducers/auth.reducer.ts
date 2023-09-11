@@ -8,10 +8,12 @@ export type AuthState = {
   loggedin: boolean;
   info?: IUser;
   fcmToken?: string;
+  haveNotices: boolean;
 };
 
 const initialState: AuthState = {
   loggedin: false,
+  haveNotices: false,
 };
 
 const authSlice = createSlice({
@@ -46,6 +48,9 @@ const authSlice = createSlice({
     setFcmToken: (state, action: PayloadAction<string>) => {
       state.fcmToken = action.payload;
     },
+    setStatusNotification: (state, action: PayloadAction<boolean>) => {
+      state.haveNotices = action.payload;
+    },
     logout: (state, action: PayloadAction) => {
       state.loggedin = false;
       state.access_token = undefined;
@@ -56,6 +61,11 @@ const authSlice = createSlice({
 
 export const authSelector = (state: RootState) => state.auth;
 
-export const {setCredential, logout, updateCredential, setFcmToken} =
-  authSlice.actions;
+export const {
+  setCredential,
+  logout,
+  updateCredential,
+  setFcmToken,
+  setStatusNotification,
+} = authSlice.actions;
 export default authSlice.reducer;

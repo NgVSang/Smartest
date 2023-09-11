@@ -24,7 +24,7 @@ const Login: FC<LoginProps> = ({}) => {
       const dataSend = {
         phone_number: data.account,
         password: data.password,
-        // deviceToken: fcmToken,
+        deviceToken: fcmToken,
       };
       const res = await AuthApi.login(dataSend);
       dispatch(setCredential(res.data));
