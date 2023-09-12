@@ -8,7 +8,7 @@ import {
 } from 'react-native';
 import React, {FC, useCallback, useEffect, useMemo, useState} from 'react';
 import {CreateCarScreenProps} from './CreateCarScreen.types';
-import {Footer, Header, SelecteInput} from '../../../components';
+import {Footer, Header, Loading, SelecteInput} from '../../../components';
 import {styles} from './CreateCarScreen.styled';
 import {Field, FieldProps, Formik} from 'formik';
 import {IFormData} from '../../../types';
@@ -29,6 +29,7 @@ const CreateCarScreen: FC<CreateCarScreenProps> = ({navigation}) => {
   const [categories, setCategories] = useState<DropDownItem[]>([]);
   const [types, setTypes] = useState<DropDownItem[]>([]);
   const [loadingSubmit, setLoadingSubmit] = React.useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
   function check(text: string) {
     return /[a-zA-Z]/.test(text[3]);
@@ -74,11 +75,15 @@ const CreateCarScreen: FC<CreateCarScreenProps> = ({navigation}) => {
 
   const handleGetCarTypes = useCallback(async (id: number | string) => {
     try {
+      setIsLoading(true);
       const res = await CarApi.getCarType(id);
       if (res.status === 1) {
         setTypes(res.data.rows);
       }
-    } catch (error: any) {}
+    } catch (error: any) {
+    } finally {
+      setIsLoading(false);
+    }
   }, []);
 
   useEffect(() => {
@@ -184,6 +189,12 @@ const CreateCarScreen: FC<CreateCarScreenProps> = ({navigation}) => {
                       items={types}
                       style={styles.inputWrapper}
                       label="Loại phương tiện theo phí đường bộ"
+                      nullText={
+                        //@ts-ignore
+                        values.category
+                          ? 'Không có dữ liệu'
+                          : 'Vui lòng chọn loại phương tiện theo phí kiểm định trước'
+                      }
                       value={field.value}
                       setValues={item => {
                         field.onChange(field.name)(item.id.toString());
@@ -259,6 +270,11 @@ const CreateCarScreen: FC<CreateCarScreenProps> = ({navigation}) => {
           </>
         )}
       </Formik>
+      {isLoading && (
+        <View style={styles.loading}>
+          <Loading />
+        </View>
+      )}
     </View>
   );
 };

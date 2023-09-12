@@ -1,10 +1,18 @@
 import {StyleSheet} from 'react-native';
-import {fonts} from '../../../constants';
+import {SCREEN_HEIGHT, SCREEN_WIDTH, fonts} from '../../../constants';
 
 export const styles = StyleSheet.create({
   scroll_view: {
     flex: 1,
     backgroundColor: '#FFFFFF',
+  },
+  loading: {
+    width: SCREEN_WIDTH,
+    zIndex: 2,
+    height: SCREEN_HEIGHT,
+    justifyContent: 'center',
+    position: 'absolute',
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',
   },
   input_group: {
     width: '100%',

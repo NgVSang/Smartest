@@ -76,6 +76,7 @@ const InfringeScreen: FC<InfringeScreenProps> = ({navigation}) => {
               autoCapitalize={'characters'}
               value={search}
               style={styles.input_style}
+              placeholderTextColor={colors.SLATE_GRAY}
               onChangeText={text => {
                 setSearch(text);
               }}

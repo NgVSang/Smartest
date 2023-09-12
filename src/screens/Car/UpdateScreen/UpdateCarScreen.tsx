@@ -1,7 +1,7 @@
 import {Image, ScrollView, Text, TouchableOpacity, View} from 'react-native';
 import React, {FC, useCallback, useEffect, useMemo, useState} from 'react';
 import {UpdateCarScreenProps} from './UpdateCarScreen.types';
-import {Footer, Header, SelecteInput} from '../../../components';
+import {Footer, Header, Loading, SelecteInput} from '../../../components';
 import {styles} from './UpdateCarScreen.styled';
 import {Field, FieldProps, Formik} from 'formik';
 import {TextInputMask} from 'react-native-masked-text';
@@ -22,6 +22,7 @@ const UpdateCarScreen: FC<UpdateCarScreenProps> = ({navigation, route}) => {
   const [loadingSubmit, setLoadingSubmit] = useState(false);
   const [images, setImages] = useState(data.display_images);
   const [arrDelete, setArrDelete] = useState<number[]>([]);
+  const [isLoading, setIsLoading] = useState(false);
 
   function check(text: string) {
     return /[a-zA-Z]/.test(text[3]);
@@ -112,11 +113,15 @@ const UpdateCarScreen: FC<UpdateCarScreenProps> = ({navigation, route}) => {
 
   const handleGetCarTypes = useCallback(async (id: number) => {
     try {
+      setIsLoading(true);
       const res = await CarApi.getCarType(id);
       if (res.status === 1) {
         setTypes(res.data.rows);
       }
-    } catch (error: any) {}
+    } catch (error: any) {
+    } finally {
+      setIsLoading(false);
+    }
   }, []);
 
   const handleDeleteCurrentImage = useCallback(
@@ -184,7 +189,7 @@ const UpdateCarScreen: FC<UpdateCarScreenProps> = ({navigation, route}) => {
                           category: item.id.toString(),
                           type: '',
                         });
-                        handleGetCarTypes(item.id);
+                        handleGetCarTypes(parseInt(item.id.toString()));
                       }}
                     />
                   )}
@@ -298,6 +303,11 @@ const UpdateCarScreen: FC<UpdateCarScreenProps> = ({navigation, route}) => {
           </>
         )}
       </Formik>
+      {isLoading && (
+        <View style={styles.loading}>
+          <Loading />
+        </View>
+      )}
     </View>
   );
 };

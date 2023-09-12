@@ -53,4 +53,13 @@ export const styles = StyleSheet.create({
     borderBlockColor: colors.DARK_BLUE,
     borderBottomWidth: 0.5,
   },
+  nullText: {
+    textAlign: 'center',
+    fontFamily: fonts.BE_VIETNAM_PRO_MEDIUM,
+    fontSize: 16,
+    lineHeight: 24,
+    color: colors.DARKER_BLUE,
+    marginTop: 50,
+    paddingHorizontal: 30,
+  },
 });

@@ -1,5 +1,5 @@
 import {StyleSheet} from 'react-native';
-import {fonts} from '../../constants';
+import {colors, fonts} from '../../constants';
 
 export const styles = StyleSheet.create({
   page_content: {
@@ -20,6 +20,9 @@ export const styles = StyleSheet.create({
   input_style: {
     width: '100%',
     paddingLeft: 44,
+    fontFamily: fonts.BE_VIETNAM_PRO_REGULAR,
+    fontSize: 13,
+    color: colors.DARKER_BLUE,
   },
   search_style: {
     height: 46,

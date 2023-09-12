@@ -18,6 +18,7 @@ const SelecteInput: FC<SelecteInputProps> = ({
   label = '',
   setValues,
   dropdownStyle,
+  nullText = 'Không có dữ liệu',
   value,
   ...props
 }) => {
@@ -59,6 +60,9 @@ const SelecteInput: FC<SelecteInputProps> = ({
           </TouchableOpacity>
         </View>
         <ScrollView contentContainerStyle={{flexGrow: 1}}>
+          {items.length === 0 && (
+            <Text style={styles.nullText}>{nullText}</Text>
+          )}
           {items.map(item => (
             <TouchableOpacity
               key={item.id}
@@ -72,7 +76,7 @@ const SelecteInput: FC<SelecteInputProps> = ({
         </ScrollView>
       </Modal>
     ),
-    [label, open, handleSelect],
+    [label, open, handleSelect, nullText],
   );
 
   return (

@@ -1,5 +1,5 @@
 import {StyleSheet} from 'react-native';
-import {fonts} from '../../constants';
+import {colors, fonts} from '../../constants';
 
 export const styles = StyleSheet.create({
   content: {
@@ -21,6 +21,7 @@ export const styles = StyleSheet.create({
     fontSize: 16,
     lineHeight: 24,
     marginTop: 50,
+    color: colors.DARKER_BLUE,
   },
   box_style: {
     marginBottom: 15,
