@@ -3,8 +3,9 @@ import React, {FC, useCallback, useState} from 'react';
 import {DateInputProps} from './DateInput.types';
 import {styles} from './DateInput.styled';
 import {TextInputMask} from 'react-native-masked-text';
-// import DateTimePicker from 'react-native-modal-datetime-picker';
+import DateTimePickerModal from 'react-native-modal-datetime-picker';
 import dayjs from 'dayjs';
+import {convertDate} from '../../../utils/string';
 
 const DateInput: FC<DateInputProps> = ({
   date,
@@ -16,6 +17,8 @@ const DateInput: FC<DateInputProps> = ({
   option = {
     format: 'DD/MM/YYYY',
   },
+  onPressCalendar,
+  mode = 'date',
   ...props
 }) => {
   const [open, setOpen] = useState(false);
@@ -26,6 +29,32 @@ const DateInput: FC<DateInputProps> = ({
     },
     [onChangeDate],
   );
+
+  const handleSelectedDate = useCallback(
+    (date: Date) => {
+      if (onChangeDate) {
+        if (mode === 'date') {
+          onChangeDate(dayjs(date).format('DD/MM/YYYY'));
+        }
+        if (mode === 'time') {
+          onChangeDate(dayjs(date).format('hh:mm'));
+        }
+      }
+      setOpen(false);
+    },
+    [onChangeDate, mode],
+  );
+
+  const hideCalendar = useCallback(() => {
+    setOpen(false);
+  }, []);
+
+  const handlePressCalendar = useCallback(() => {
+    setOpen(true);
+    // if (onPressCalendar) onPressCalendar();
+  }, [onPressCalendar]);
+
+  console.log(open);
 
   return (
     <View style={style}>
@@ -42,23 +71,19 @@ const DateInput: FC<DateInputProps> = ({
       {haveCalendar && (
         <TouchableOpacity
           style={styles.icon_position}
-          onPress={() => {
-            setOpen(true);
-          }}>
+          onPress={handlePressCalendar}>
           <Image
             source={require('../../../assets/icons/calendar_icon.png')}
             style={styles.icon_style}
           />
         </TouchableOpacity>
       )}
-      {/* <DateTimePicker
+      <DateTimePickerModal
         isVisible={open}
-        onCancel={() => setOpen(false)}
-        onConfirm={date => {
-          handelChangeDate(dayjs(date).format('YYYY-MM-DD'));
-        }}
-        date={new Date(date || '')}
-      /> */}
+        mode={mode}
+        onConfirm={handleSelectedDate}
+        onCancel={hideCalendar}
+      />
     </View>
   );
 };

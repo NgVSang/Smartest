@@ -3,7 +3,7 @@ import React, {FC, useCallback, useEffect, useMemo, useState} from 'react';
 import {CreateRegistryTimeScreenProps} from './CreateRegistryTimeScreen.types';
 import {DateInput, Footer, Header, SelecteInput} from '../../../components';
 import {styles} from './CreateRegistryTimeScreen.styled';
-import {ErrorMessage, Field, FieldProps, Formik} from 'formik';
+import {ErrorMessage, Field, FieldProps, Formik, useFormik} from 'formik';
 import {ICar, IFormData, IRequired} from '../../../types';
 import {CarApi} from '../../../services/api/car.api';
 import {
@@ -15,6 +15,7 @@ import {colors, fonts} from '../../../constants';
 import {RegistryApi} from '../../../services/api';
 import Toast from 'react-native-toast-message';
 import {RegistryTimeSchema} from '../../../services/validators';
+import DateTimePickerModal from 'react-native-modal-datetime-picker';
 import dayjs from 'dayjs';
 
 const CreateRegistryTimeScreen: FC<CreateRegistryTimeScreenProps> = ({
@@ -25,7 +26,6 @@ const CreateRegistryTimeScreen: FC<CreateRegistryTimeScreenProps> = ({
   const [cars, setCars] = useState<ICar[]>([]);
   const [required, setRequired] = useState<IRequired[]>([]);
   const [loadingSubmit, setLoadingSubmit] = React.useState(false);
-
   const handleGetData = useCallback(async () => {
     try {
       const res = await CarApi.getListCar();
@@ -54,8 +54,11 @@ const CreateRegistryTimeScreen: FC<CreateRegistryTimeScreenProps> = ({
   const handelGetRequired = useCallback(async () => {
     try {
       const res = await CarApi.getListRequired();
+      console.log(res.data);
+
       if (res.status === 1) {
         setRequired(res.data.profile);
+        console.log(res.data);
       }
     } catch (error) {}
   }, []);
@@ -129,131 +132,104 @@ const CreateRegistryTimeScreen: FC<CreateRegistryTimeScreenProps> = ({
     [carOptions],
   );
 
+  const formik = useFormik({
+    initialValues: {
+      car: carId || '',
+      time: '',
+      date: '',
+    },
+    onSubmit: handleSubmit,
+    validationSchema: RegistryTimeSchema,
+  });
   return (
     <View style={{flex: 1}}>
       <Header title="Đăng ký đăng kiểm" />
-      <Formik
-        initialValues={{
-          car: carId || '',
-          time: '',
-          date: '',
-        }}
-        validationSchema={RegistryTimeSchema}
-        onSubmit={handleSubmit}>
-        {({handleSubmit, setValues, values}) => (
-          <>
-            <ScrollView style={styles.scroll_view}>
-              <View style={styles.input_group}>
-                <Field name="car">
-                  {({field, form}: FieldProps) => (
-                    <View style={styles.input_style}>
-                      <SelecteInput
-                        items={carOptions}
-                        label="Loại phương tiện theo phí đường bộ"
-                        value={field.value}
-                        setValues={item => {
-                          field.onChange(field.name)(item.id.toString());
-                        }}
-                      />
-                      <View style={styles.error_message}>
-                        <ErrorMessage
-                          name={field.name}
-                          render={(errorMessage: string) => (
-                            <Text style={{color: colors.RED}}>
-                              {errorMessage}
-                            </Text>
-                          )}
-                        />
-                      </View>
-                    </View>
-                  )}
-                </Field>
-                <View
-                  style={[styles.input_style, {flexDirection: 'row', gap: 15}]}>
-                  <Field name="date">
-                    {({field, form}: FieldProps) => (
-                      <View style={styles.input_picker}>
-                        <DateInput
-                          date={field.value}
-                          label="Ngày đăng ký"
-                          onChangeDate={field.onChange(field.name)}
-                          onBlur={form.handleBlur(field.name)}
-                        />
-                        <View style={styles.error_message}>
-                          <ErrorMessage
-                            name={field.name}
-                            render={(errorMessage: string) => (
-                              <Text style={{color: colors.RED}}>
-                                {errorMessage}
-                              </Text>
-                            )}
-                          />
-                        </View>
-                      </View>
-                    )}
-                  </Field>
-                  <Field name="time">
-                    {({field, form}: FieldProps) => (
-                      <View style={styles.input_picker}>
-                        <DateInput
-                          date={field.value}
-                          label="Giờ đăng ký"
-                          onChangeDate={field.onChange(field.name)}
-                          placeholder="hh:mm"
-                          option={{
-                            format: 'hh:mm',
-                          }}
-                          onBlur={form.handleBlur(field.name)}
-                        />
-                        <View style={styles.error_message}>
-                          <ErrorMessage
-                            name={field.name}
-                            render={(errorMessage: string) => (
-                              <Text style={{color: colors.RED}}>
-                                {errorMessage}
-                              </Text>
-                            )}
-                          />
-                        </View>
-                      </View>
-                    )}
-                  </Field>
-                </View>
-              </View>
-              <View style={styles.rule_group}>
-                <Text
-                  style={{
-                    fontFamily: fonts.BE_VIETNAM_PRO_BOLD,
-                    color: '#2C3442',
-                    fontSize: 14,
-                    lineHeight: 22,
-                    fontWeight: '700',
-                    marginBottom: 15,
-                  }}>
-                  Khi đem xe đi đăng kiểm cần có:
-                </Text>
-                {required.map(e => (
-                  <View style={styles.rule_group_row} key={e.id}>
-                    <Image
-                      source={require('../../../assets/icons/required_check_icon.png')}
-                      style={styles.icon_check_style}
-                    />
-                    <Text style={styles.rule_content_style}>{e.name}</Text>
-                  </View>
-                ))}
-              </View>
-            </ScrollView>
-            <Footer
-              buttonOkContent="TIẾP TỤC"
-              onClickButtonOk={handleSubmit}
-              buttonCancelContent="HỦY"
-              style={styles.footer_style}
-              loading={loadingSubmit}
-              disabled={loadingSubmit}
+      <ScrollView style={styles.scroll_view}>
+        <View style={styles.input_group}>
+          <View style={styles.input_style}>
+            <SelecteInput
+              items={carOptions}
+              label="Loại phương tiện theo phí đường bộ"
+              value={formik.values.car}
+              setValues={item => {
+                formik.setFieldValue('car', item.id.toString());
+              }}
             />
-          </>
-        )}
-      </Formik>
+            {formik.errors.car && (
+              <View style={styles.error_message}>
+                <Text style={{color: colors.RED}}>{formik.errors.car}</Text>
+              </View>
+            )}
+          </View>
+          <View style={[styles.input_style, {flexDirection: 'row', gap: 15}]}>
+            <View style={styles.input_picker}>
+              <DateInput
+                date={formik.values.date}
+                label="Ngày đăng ký"
+                onChangeDate={date => {
+                  formik.setFieldValue('date', date);
+                }}
+                onBlur={formik.handleBlur('date')}
+              />
+              {formik.errors.date && (
+                <View style={styles.error_message}>
+                  <Text style={{color: colors.RED}}>{formik.errors.date}</Text>
+                </View>
+              )}
+            </View>
+            <View style={styles.input_picker}>
+              <DateInput
+                date={formik.values.time}
+                label="Giờ đăng ký"
+                onChangeDate={date => {
+                  formik.setFieldValue('time', date);
+                }}
+                placeholder="hh:mm"
+                option={{
+                  format: 'hh:mm',
+                }}
+                onBlur={formik.handleBlur('time')}
+                mode="time"
+              />
+              {formik.errors.time && (
+                <View style={styles.error_message}>
+                  <Text style={{color: colors.RED}}>{formik.errors.time}</Text>
+                </View>
+              )}
+            </View>
+          </View>
+        </View>
+        <View style={styles.rule_group}>
+          <Text
+            style={{
+              fontFamily: fonts.BE_VIETNAM_PRO_BOLD,
+              color: '#2C3442',
+              fontSize: 14,
+              lineHeight: 22,
+              fontWeight: '700',
+              marginBottom: 15,
+            }}>
+            Khi đem xe đi đăng kiểm cần có:
+          </Text>
+          {required.map(e => (
+            <View style={styles.rule_group_row} key={e.id}>
+              <Image
+                source={require('../../../assets/icons/required_check_icon.png')}
+                style={styles.icon_check_style}
+              />
+              <Text style={styles.rule_content_style}>{e.name}</Text>
+            </View>
+          ))}
+        </View>
+      </ScrollView>
+      <Footer
+        buttonOkContent="TIẾP TỤC"
+        onClickButtonOk={formik.handleSubmit}
+        buttonCancelContent="HỦY"
+        style={styles.footer_style}
+        loading={loadingSubmit}
+        disabled={loadingSubmit}
+      />
     </View>
   );
 };
