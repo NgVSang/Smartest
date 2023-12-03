@@ -27,6 +27,9 @@ const Login: FC<LoginProps> = ({}) => {
         deviceToken: fcmToken,
       };
       const res = await AuthApi.login(dataSend);
+      if (res.status !== 1) {
+        throw new Error('Tài khoản hoặc mật khẩu không đúng!');
+      }
       dispatch(setCredential(res.data));
       setHeaderConfigAxios(res.data.access_token);
       NavigationService.reset({
@@ -38,6 +41,8 @@ const Login: FC<LoginProps> = ({}) => {
         ],
       });
     } catch (error: any) {
+      console.log(error);
+
       Toast.show({
         type: 'error',
         text1: error.message || 'Tài khoản hoặc mật khẩu không đúng!',

@@ -181,7 +181,7 @@ const UpdateRegistryScreen: FC<UpdateRegistryScreenProps> = ({
           <View style={styles.group}>
             <Text style={styles.group_title}>Xe đăng ký</Text>
             <Text style={styles.group_content}>
-              {converLicensePlate(data.license_plates)}
+              {converLicensePlate(data.license_plate)}
             </Text>
           </View>
           <View style={styles.dateItemWrapper}>
