@@ -13,4 +13,5 @@ export interface SelecteInputProps extends ViewProps {
   nullText?: string;
   setValues?: (value: DropDownItem) => void;
   dropdownStyle?: ViewStyle;
+  search?: boolean;
 }

@@ -10,13 +10,14 @@ import React, {FC, useCallback} from 'react';
 import {ProfileScreenProps} from './ProfileScreen.types';
 import {useDispatch, useSelector} from 'react-redux';
 import {authSelector, logout} from '../../redux';
-import {Footer, Header} from '../../components';
+import {Avatar, Footer, Header} from '../../components';
 import {styles} from './ProfileScreen.styled';
 import {BASE_URL} from '../../config';
 
 const ProfileScreen: FC<ProfileScreenProps> = ({navigation}) => {
   const {info} = useSelector(authSelector);
   const dispatch = useDispatch();
+
   const handleLogout = useCallback(() => {
     Alert.alert('Đăng xuất', 'Bạn có muốn đăng xuất không?', [
       {
@@ -37,17 +38,14 @@ const ProfileScreen: FC<ProfileScreenProps> = ({navigation}) => {
         },
       },
     ]);
-  }, [dispatch]);
+  }, [dispatch, navigation]);
 
   return (
     <View style={{flex: 1}}>
       <Header title="Thông tin tài khoản" />
       <ScrollView style={styles.scroll_view}>
         <View style={styles.user}>
-          <Image
-            source={{uri: BASE_URL + info?.avatar}}
-            style={styles.user_img}
-          />
+          <Avatar imageUrl={BASE_URL + info?.avatar} style={styles.user_img} />
           <Text style={styles.user_name}>{info?.name}</Text>
           <Text style={styles.user_role}>Người dùng</Text>
         </View>

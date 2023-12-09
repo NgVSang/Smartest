@@ -16,7 +16,7 @@ export interface IInfringe {
 
 export interface ICarDetail {
   id: number;
-  license_plates: string;
+  license_plate: string;
   manufacture_at: number;
   type: {
     id: number;

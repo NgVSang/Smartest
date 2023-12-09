@@ -4,7 +4,7 @@ import {date, time, address} from './common';
 export const RegistryTimeSchema = Yup.object().shape({
   car: Yup.string().required('Vui lòng chọn phương tiện'),
   date: date,
-  time: time,
+  time: Yup.string().required('Vui lòng chọn thời gian'),
 });
 
 export const RegistryInfoSchema = Yup.object().shape({

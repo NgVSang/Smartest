@@ -1,3 +1,4 @@
+/* eslint-disable react-native/no-inline-styles */
 import {
   Alert,
   Image,
@@ -11,7 +12,7 @@ import {
 } from 'react-native';
 import React, {FC, useCallback, useEffect, useState} from 'react';
 import {CreateRegistryInforScreenProps} from './CreateRegistryInforScreen.types';
-import {FeeContent, Footer, Header, SelecteInput} from '../../../components';
+import {FeeContent, Footer, Header} from '../../../components';
 import {styles} from './CreateRegistryInforScreen.styled';
 import {useFormik} from 'formik';
 import {IFee, IFormData} from '../../../types';
@@ -69,6 +70,7 @@ const CreateRegistryInforScreen: FC<CreateRegistryInforScreenProps> = ({
   useEffect(() => {
     handleGetCost();
     dispatch(clearPosition());
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const handleSubmit = useCallback(
@@ -86,12 +88,13 @@ const CreateRegistryInforScreen: FC<CreateRegistryInforScreenProps> = ({
             road_fee: feeList.road_fee,
             tariff: feeList.tariff,
           };
-          if (data.check)
+          if (data.check) {
             dataSend = {
               ...dataSend,
               address: data.address,
               serviceCost: feeList.serviceCost,
             };
+          }
           const res = await RegistryApi.registerForRegistration(dataSend);
           if (res.status === 1) {
             dispatch(clearPosition());
@@ -125,7 +128,7 @@ const CreateRegistryInforScreen: FC<CreateRegistryInforScreenProps> = ({
         }
       }
     },
-    [car, date, time, feeList],
+    [feeList, car.id, date, time, dispatch, navigation],
   );
 
   const formik = useFormik({
@@ -147,6 +150,7 @@ const CreateRegistryInforScreen: FC<CreateRegistryInforScreenProps> = ({
       formik.setFieldValue('address', '');
       handleGetCost();
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [position]);
 
   return (

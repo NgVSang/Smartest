@@ -8,14 +8,14 @@ import {
 } from 'react-native';
 import React, {FC, useCallback, useMemo, useState} from 'react';
 import {UpdateProfileScreenProps} from './UpdateProfileScreen.types';
-import {Footer, Header} from '../../components';
+import {Avatar, Footer, Header} from '../../components';
 import {styles} from './UpdateProfileScreen.styled';
 import {Asset, launchImageLibrary} from 'react-native-image-picker';
 import {useDispatch, useSelector} from 'react-redux';
 import {authSelector, updateCredential} from '../../redux';
 import {BASE_URL} from '../../config';
 import {IFormData} from '../../types';
-import {Field, FieldProps, Formik, useFormik} from 'formik';
+import {useFormik} from 'formik';
 import {colors} from '../../constants';
 import {AuthApi} from '../../services/api';
 import Toast from 'react-native-toast-message';
@@ -39,8 +39,11 @@ const UpdateProfileScreen: FC<UpdateProfileScreenProps> = ({navigation}) => {
   }, []);
 
   const handleDeleteImage = useCallback(() => {
-    if (avatar) setAvatar(undefined);
-    else setRemove(1);
+    if (avatar) {
+      setAvatar(undefined);
+    } else {
+      setRemove(1);
+    }
   }, [avatar]);
 
   const renderAvatar = useMemo(() => {
@@ -56,12 +59,9 @@ const UpdateProfileScreen: FC<UpdateProfileScreenProps> = ({navigation}) => {
       );
     }
     return (
-      <Image
-        source={{uri: BASE_URL + info?.avatar}}
-        style={styles.avatar_image}
-      />
+      <Avatar imageUrl={BASE_URL + info?.avatar} style={styles.avatar_image} />
     );
-  }, [avatar, remove]);
+  }, [avatar, info?.avatar, remove]);
 
   const handleSubmit = useCallback(
     async (data: IFormData) => {
@@ -122,7 +122,7 @@ const UpdateProfileScreen: FC<UpdateProfileScreenProps> = ({navigation}) => {
         setLoadingSubmit(false);
       }
     },
-    [avatar, remove, dispatch],
+    [avatar, remove, dispatch, navigation],
   );
 
   const formik = useFormik({

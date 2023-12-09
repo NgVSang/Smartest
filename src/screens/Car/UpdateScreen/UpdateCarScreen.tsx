@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-shadow */
+/* eslint-disable react-native/no-inline-styles */
 import {Image, ScrollView, Text, TouchableOpacity, View} from 'react-native';
 import React, {FC, useCallback, useEffect, useMemo, useState} from 'react';
 import {UpdateCarScreenProps} from './UpdateCarScreen.types';
@@ -82,7 +84,7 @@ const UpdateCarScreen: FC<UpdateCarScreenProps> = ({navigation, route}) => {
         setLoadingSubmit(false);
       }
     },
-    [photos, arrDelete],
+    [photos, arrDelete, id, navigation],
   );
 
   const handleGetCarCategories = useCallback(async () => {
@@ -136,6 +138,7 @@ const UpdateCarScreen: FC<UpdateCarScreenProps> = ({navigation, route}) => {
   useEffect(() => {
     handleGetCarCategories();
     handleGetCarTypes(data.category.id);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (
@@ -143,7 +146,7 @@ const UpdateCarScreen: FC<UpdateCarScreenProps> = ({navigation, route}) => {
       <Header title="Sửa thông tin xe" />
       <Formik
         initialValues={{
-          licensePlates: converLicensePlate(data.license_plates),
+          licensePlates: converLicensePlate(data.license_plate),
           category: data.category.id.toString(),
           type: data.type.id.toString(),
           manufacture_at: data.manufacture_at,
@@ -177,28 +180,30 @@ const UpdateCarScreen: FC<UpdateCarScreenProps> = ({navigation, route}) => {
                   )}
                 </Field>
                 <Field name="category">
-                  {({field, form}: FieldProps) => (
+                  {({field}: FieldProps) => (
                     <SelecteInput
                       items={categories}
                       style={styles.inputWrapper}
                       label="Loại phương tiện theo phí kiểm định"
                       value={field.value}
+                      search
                       setValues={item => {
                         setValues({
                           ...values,
                           category: item.id.toString(),
                           type: '',
                         });
-                        handleGetCarTypes(parseInt(item.id.toString()));
+                        handleGetCarTypes(parseInt(item.id.toString(), 10));
                       }}
                     />
                   )}
                 </Field>
                 <Field name="type">
-                  {({field, form}: FieldProps) => (
+                  {({field}: FieldProps) => (
                     <SelecteInput
                       items={types}
                       style={styles.inputWrapper}
+                      search
                       label="Loại phương tiện theo phí đường bộ"
                       value={field.value}
                       setValues={item => {
@@ -208,7 +213,7 @@ const UpdateCarScreen: FC<UpdateCarScreenProps> = ({navigation, route}) => {
                   )}
                 </Field>
                 <Field name="manufacture_at">
-                  {({field, form}: FieldProps) => (
+                  {({field}: FieldProps) => (
                     <SelecteInput
                       items={listYear}
                       style={styles.inputWrapper}

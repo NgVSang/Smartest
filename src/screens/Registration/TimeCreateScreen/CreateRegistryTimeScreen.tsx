@@ -1,9 +1,16 @@
-import {Alert, Image, ScrollView, StyleSheet, Text, View} from 'react-native';
+/* eslint-disable react-native/no-inline-styles */
+import {Alert, Image, ScrollView, Text, View} from 'react-native';
 import React, {FC, useCallback, useEffect, useMemo, useState} from 'react';
 import {CreateRegistryTimeScreenProps} from './CreateRegistryTimeScreen.types';
-import {DateInput, Footer, Header, SelecteInput} from '../../../components';
+import {
+  DateInput,
+  DropDownItem,
+  Footer,
+  Header,
+  SelecteInput,
+} from '../../../components';
 import {styles} from './CreateRegistryTimeScreen.styled';
-import {ErrorMessage, Field, FieldProps, Formik, useFormik} from 'formik';
+import {useFormik} from 'formik';
 import {ICar, IFormData, IRequired} from '../../../types';
 import {CarApi} from '../../../services/api/car.api';
 import {
@@ -15,8 +22,6 @@ import {colors, fonts} from '../../../constants';
 import {RegistryApi} from '../../../services/api';
 import Toast from 'react-native-toast-message';
 import {RegistryTimeSchema} from '../../../services/validators';
-import DateTimePickerModal from 'react-native-modal-datetime-picker';
-import dayjs from 'dayjs';
 
 const CreateRegistryTimeScreen: FC<CreateRegistryTimeScreenProps> = ({
   navigation,
@@ -66,6 +71,7 @@ const CreateRegistryTimeScreen: FC<CreateRegistryTimeScreenProps> = ({
   useEffect(() => {
     handleGetData();
     handelGetRequired();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const handleSubmit = useCallback(
@@ -129,7 +135,7 @@ const CreateRegistryTimeScreen: FC<CreateRegistryTimeScreenProps> = ({
         setLoadingSubmit(false);
       }
     },
-    [carOptions],
+    [carOptions, navigation],
   );
 
   const formik = useFormik({
@@ -141,6 +147,23 @@ const CreateRegistryTimeScreen: FC<CreateRegistryTimeScreenProps> = ({
     onSubmit: handleSubmit,
     validationSchema: RegistryTimeSchema,
   });
+
+  const timeOptions = useMemo(() => {
+    const options: DropDownItem[] = [];
+    for (let i = 7; i <= 15; i++) {
+      const paddedHour = i < 10 ? `0${i}` : `${i}`;
+      options.push({
+        id: i * 2,
+        name: `${paddedHour}:00 - ${paddedHour}:30`,
+      });
+      options.push({
+        id: i * 2 + 1,
+        name: `${paddedHour}:30 - ${(i + 1).toString().padStart(2, '0')}:00`,
+      });
+    }
+    return options;
+  }, []);
+
   return (
     <View style={{flex: 1}}>
       <Header title="Đăng ký đăng kiểm" />
@@ -178,7 +201,7 @@ const CreateRegistryTimeScreen: FC<CreateRegistryTimeScreenProps> = ({
               )}
             </View>
             <View style={styles.input_picker}>
-              <DateInput
+              {/* <DateInput
                 date={formik.values.time}
                 label="Giờ đăng ký"
                 onChangeDate={date => {
@@ -190,6 +213,18 @@ const CreateRegistryTimeScreen: FC<CreateRegistryTimeScreenProps> = ({
                 }}
                 onBlur={formik.handleBlur('time')}
                 mode="time"
+              /> */}
+              <SelecteInput
+                items={timeOptions}
+                label="Giờ đăng ký"
+                dropdownStyle={{
+                  marginTop: 6,
+                }}
+                value={formik.values.time}
+                placeholder="hh:mm - hh:mm"
+                setValues={item => {
+                  formik.setFieldValue('time', item.id.toString());
+                }}
               />
               {formik.errors.time && (
                 <View style={styles.error_message}>

@@ -6,7 +6,7 @@ import {BASE_URL} from '../../config';
 import {useSelector} from 'react-redux';
 import {authSelector} from '../../redux';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
-import {MonitoringSchedule} from '../../components';
+import {Avatar, MonitoringSchedule} from '../../components';
 
 const HomeScreen: FC<HomeScreenProps> = ({navigation}) => {
   const {info} = useSelector(authSelector);
@@ -55,7 +55,7 @@ const HomeScreen: FC<HomeScreenProps> = ({navigation}) => {
         },
       },
     ];
-  }, []);
+  }, [navigation]);
 
   return (
     <View style={styles.screen}>
@@ -69,8 +69,8 @@ const HomeScreen: FC<HomeScreenProps> = ({navigation}) => {
         <TouchableOpacity
           style={styles.header_left}
           onPress={() => navigation.push('Profile')}>
-          <Image
-            source={{uri: BASE_URL + info?.avatar}}
+          <Avatar
+            imageUrl={BASE_URL + info?.avatar}
             style={{
               width: 40,
               height: 40,

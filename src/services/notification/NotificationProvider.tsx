@@ -1,4 +1,4 @@
-import {Alert, Platform, View, Clipboard} from 'react-native';
+import {Platform, View} from 'react-native';
 import React, {FC, PropsWithChildren, useCallback, useEffect} from 'react';
 import {PERMISSIONS, request} from 'react-native-permissions';
 import messaging from '@react-native-firebase/messaging';
@@ -21,7 +21,7 @@ const NotificationProvider: FC<PropsWithChildren> = ({children}) => {
     } catch (error) {
       console.log(error);
     }
-  }, []);
+  }, [dispatch]);
 
   const handleSubscribe = async () => {
     if (Platform.OS === 'android') {
@@ -49,11 +49,11 @@ const NotificationProvider: FC<PropsWithChildren> = ({children}) => {
       dispatch(setStatusNotification(true));
     });
 
-    messaging().setBackgroundMessageHandler(async remoteMessage => {
+    messaging().setBackgroundMessageHandler(async (remoteMessage: any) => {
       console.log(JSON.parse(remoteMessage.data?.data || ''));
     });
 
-    messaging().onNotificationOpenedApp(remoteMessage => {
+    messaging().onNotificationOpenedApp((remoteMessage: any) => {
       if (remoteMessage) {
         const data = JSON.parse(remoteMessage.data?.data || '');
         if (data && data.detail.notiId) {
@@ -77,7 +77,7 @@ const NotificationProvider: FC<PropsWithChildren> = ({children}) => {
 
     messaging()
       .getInitialNotification()
-      .then(remoteMessage => {
+      .then((remoteMessage: any) => {
         if (remoteMessage) {
           const data = JSON.parse(remoteMessage.data?.data || '');
           if (data && data.detail.notiId) {
@@ -99,11 +99,12 @@ const NotificationProvider: FC<PropsWithChildren> = ({children}) => {
         }
       });
     return unsubscribe;
-  }, []);
+  }, [dispatch]);
 
   useEffect(() => {
     handleGetStatusNotification();
     handleSubscribe();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return <View style={{flex: 1}}>{children}</View>;

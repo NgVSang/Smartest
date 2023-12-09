@@ -3,7 +3,6 @@ import {
   Image,
   RefreshControl,
   ScrollView,
-  StyleSheet,
   Text,
   View,
 } from 'react-native';
@@ -15,8 +14,6 @@ import {Footer, Header} from '../../../components';
 import {styles} from './CarDetailScreen.styled';
 import {converLicensePlate} from '../../../utils/string';
 import {BASE_URL} from '../../../config';
-import {useDispatch} from 'react-redux';
-import {openModal} from '../../../redux';
 import Toast from 'react-native-toast-message';
 
 const CarDetailScreen: FC<CarDetailScreenProps> = ({navigation, route}) => {
@@ -25,6 +22,8 @@ const CarDetailScreen: FC<CarDetailScreenProps> = ({navigation, route}) => {
   const [data, setData] = React.useState<ICarDetail>();
   const [isLoading, setIsLoading] = React.useState(true);
   const [loadingSubmit, setLoadingSubmit] = React.useState(false);
+
+  console.log(data);
 
   const handleGetData = useCallback(async () => {
     try {
@@ -46,6 +45,7 @@ const CarDetailScreen: FC<CarDetailScreenProps> = ({navigation, route}) => {
 
   useEffect(() => {
     handleGetData();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const handleDelete = useCallback(() => {
@@ -92,7 +92,7 @@ const CarDetailScreen: FC<CarDetailScreenProps> = ({navigation, route}) => {
         },
       },
     ]);
-  }, [id]);
+  }, [id, navigation]);
 
   return (
     <View style={{flex: 1}}>
@@ -107,7 +107,7 @@ const CarDetailScreen: FC<CarDetailScreenProps> = ({navigation, route}) => {
             <View style={styles.group}>
               <Text style={styles.group_title}>Biển số xe</Text>
               <Text style={styles.group_content}>
-                {converLicensePlate(data.license_plates)}
+                {converLicensePlate(data.license_plate)}
               </Text>
             </View>
             <View style={styles.group}>

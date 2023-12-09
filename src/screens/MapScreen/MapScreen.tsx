@@ -1,3 +1,5 @@
+/* eslint-disable react-native/no-inline-styles */
+/* eslint-disable @typescript-eslint/no-shadow */
 import {
   Alert,
   Platform,
@@ -24,7 +26,6 @@ import {styles} from './MapScreen.styled';
 import {colors} from '../../constants';
 import MapView, {
   Callout,
-  MapPressEvent,
   Marker,
   PROVIDER_DEFAULT,
   PROVIDER_GOOGLE,
@@ -37,7 +38,7 @@ import {useDispatch} from 'react-redux';
 import {setCurrentPosition, setHistoryPosition} from '../../redux';
 import Toast from 'react-native-toast-message';
 
-const MapScreen: FC<MapScreenProps> = ({navigation, route}) => {
+const MapScreen: FC<MapScreenProps> = ({navigation}) => {
   const mapRef = useRef<MapView>(null);
   const dispatch = useDispatch();
 
@@ -57,14 +58,16 @@ const MapScreen: FC<MapScreenProps> = ({navigation, route}) => {
     if (Platform.OS === 'ios') {
     }
     if (Platform.OS === 'android') {
-      const location = await request(PERMISSIONS.ANDROID.ACCESS_FINE_LOCATION);
+      await request(PERMISSIONS.ANDROID.ACCESS_FINE_LOCATION);
     }
   }, []);
 
   useEffect(() => {
     requestPermissions();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   const debounceSearch = useCallback(
     debounce(async (text: string) => {
       if (text !== '') {
@@ -130,7 +133,7 @@ const MapScreen: FC<MapScreenProps> = ({navigation, route}) => {
     } else {
       Alert.alert('Cảnh báo', 'Vui lòng chọn ví trí');
     }
-  }, [position]);
+  }, [dispatch, navigation, position]);
 
   return (
     <TouchableWithoutFeedback

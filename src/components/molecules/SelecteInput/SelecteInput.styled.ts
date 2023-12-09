@@ -23,12 +23,27 @@ export const styles = StyleSheet.create({
   headerModalWrapper: {
     paddingVertical: 20,
     paddingHorizontal: 20,
-    marginBottom: 20,
     borderBottomColor: colors.DARKER_BLUE,
     borderBottomWidth: 1,
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
+  },
+  searchWrapper: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    paddingHorizontal: 20,
+    paddingVertical: 5,
+    borderBottomColor: colors.DARK_BLUE,
+    borderBottomWidth: 1,
+    marginBottom: 20,
+  },
+  searchInput: {
+    flex: 1,
+    fontFamily: fonts.BE_VIETNAM_PRO_MEDIUM,
+    fontSize: 15,
+    color: colors.LIGHT_GRAY,
+    backgroundColor: colors.WHITE,
   },
   textStyled: {
     color: colors.DARKER_BLUE,

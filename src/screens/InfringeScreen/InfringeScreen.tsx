@@ -26,7 +26,7 @@ const InfringeScreen: FC<InfringeScreenProps> = ({navigation}) => {
         search: search,
       });
     }
-  }, [search]);
+  }, [navigation, search]);
 
   function check(text: string) {
     return /[a-zA-Z]/.test(text[3]);

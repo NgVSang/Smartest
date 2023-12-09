@@ -1,4 +1,4 @@
-import {RefreshControl, ScrollView, StyleSheet, Text, View} from 'react-native';
+import {RefreshControl, ScrollView, View} from 'react-native';
 import React, {FC, useCallback, useEffect, useState} from 'react';
 import {CarListScreenProps} from './CarListScreen.types';
 import {CarInformation, Footer, Header} from '../../../components';

@@ -1,11 +1,11 @@
-import {Image, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
+/* eslint-disable @typescript-eslint/no-shadow */
+import {Image, Text, TouchableOpacity, View} from 'react-native';
 import React, {FC, useCallback, useState} from 'react';
 import {DateInputProps} from './DateInput.types';
 import {styles} from './DateInput.styled';
 import {TextInputMask} from 'react-native-masked-text';
 import DateTimePickerModal from 'react-native-modal-datetime-picker';
 import dayjs from 'dayjs';
-import {convertDate} from '../../../utils/string';
 
 const DateInput: FC<DateInputProps> = ({
   date,
@@ -17,15 +17,16 @@ const DateInput: FC<DateInputProps> = ({
   option = {
     format: 'DD/MM/YYYY',
   },
-  onPressCalendar,
   mode = 'date',
   ...props
 }) => {
   const [open, setOpen] = useState(false);
 
   const handelChangeDate = useCallback(
-    (date: string, rawText?: string) => {
-      if (onChangeDate) onChangeDate(date);
+    (date: string) => {
+      if (onChangeDate) {
+        onChangeDate(date);
+      }
     },
     [onChangeDate],
   );
@@ -52,7 +53,7 @@ const DateInput: FC<DateInputProps> = ({
   const handlePressCalendar = useCallback(() => {
     setOpen(true);
     // if (onPressCalendar) onPressCalendar();
-  }, [onPressCalendar]);
+  }, []);
 
   console.log(open);
 

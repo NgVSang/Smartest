@@ -1,22 +1,13 @@
-import {
-  Image,
-  ScrollView,
-  StyleSheet,
-  Text,
-  TouchableOpacity,
-  View,
-} from 'react-native';
+/* eslint-disable react-native/no-inline-styles */
+/* eslint-disable @typescript-eslint/no-shadow */
+import {Image, ScrollView, Text, TouchableOpacity, View} from 'react-native';
 import React, {FC, useCallback, useEffect, useMemo, useState} from 'react';
 import {CreateCarScreenProps} from './CreateCarScreen.types';
 import {Footer, Header, Loading, SelecteInput} from '../../../components';
 import {styles} from './CreateCarScreen.styled';
 import {Field, FieldProps, Formik} from 'formik';
 import {IFormData} from '../../../types';
-import {
-  launchImageLibrary,
-  launchCamera,
-  Asset,
-} from 'react-native-image-picker';
+import {launchImageLibrary, Asset} from 'react-native-image-picker';
 import {TextInputMask} from 'react-native-masked-text';
 import {DropDownItem} from '../../../components/molecules/SelecteInput/SelecteInput.types';
 import {CarApi} from '../../../services/api/car.api';
@@ -88,6 +79,7 @@ const CreateCarScreen: FC<CreateCarScreenProps> = ({navigation}) => {
 
   useEffect(() => {
     handleGetCarCategories();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const handleSubmit = useCallback(
@@ -131,7 +123,7 @@ const CreateCarScreen: FC<CreateCarScreenProps> = ({navigation}) => {
         setLoadingSubmit(false);
       }
     },
-    [photos],
+    [navigation, photos],
   );
 
   return (
@@ -166,10 +158,11 @@ const CreateCarScreen: FC<CreateCarScreenProps> = ({navigation}) => {
                   )}
                 </Field>
                 <Field name="category">
-                  {({field, form}: FieldProps) => (
+                  {({field}: FieldProps) => (
                     <SelecteInput
                       items={categories}
                       style={styles.inputWrapper}
+                      search
                       label="Loại phương tiện theo phí kiểm định"
                       value={field.value}
                       setValues={item => {
@@ -184,11 +177,12 @@ const CreateCarScreen: FC<CreateCarScreenProps> = ({navigation}) => {
                   )}
                 </Field>
                 <Field name="type">
-                  {({field, form}: FieldProps) => (
+                  {({field}: FieldProps) => (
                     <SelecteInput
                       items={types}
                       style={styles.inputWrapper}
                       label="Loại phương tiện theo phí đường bộ"
+                      search
                       nullText={
                         //@ts-ignore
                         values.category
@@ -203,7 +197,7 @@ const CreateCarScreen: FC<CreateCarScreenProps> = ({navigation}) => {
                   )}
                 </Field>
                 <Field name="manufacture_at">
-                  {({field, form}: FieldProps) => (
+                  {({field}: FieldProps) => (
                     <SelecteInput
                       items={listYear}
                       style={styles.inputWrapper}
